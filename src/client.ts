@@ -71,7 +71,14 @@ export class Client {
       const path = this.constructPath(Endpoints.DETAILS, {
         [Endpoints.DETAILS.split(PARAM_INDICATOR)[1]]: searchQuery
       });
-      const res = await this.request(path);
+      const res: Details.Response = await this.request(path).then((res: Details.Response) => ({
+        payload: {
+          ...res.payload,
+          discord: new Details.Discord(res.payload.discord)
+        }
+      }));
+      res.payload.discord = new Details.Discord(res.payload.discord);
+
       if (this.userProfiles) this.userProfiles.set(searchQuery, res);
       return res;
     }
@@ -81,7 +88,12 @@ export class Client {
      */
     public async fetchTopUsers (): Promise<TopLikes.Response> {
       const path = this.constructPath(Endpoints.TOP_LIKES);
-      return await this.request(path);
+      return this.request(path).then((res: TopLikes.Response) => ({
+        payload: res.payload.map(x => ({
+          ...x,
+          discord: new TopLikes.DiscordUser(x.discord)
+        }))
+      }));
     }
 
     /**
