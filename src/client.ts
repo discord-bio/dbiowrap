@@ -3,12 +3,24 @@ import { RatelimitHeaders, HeaderNames, StatusCodes, Details, TopLikes } from '.
 import fetch, { Request, Response as NodeFetchResponse, Headers } from 'node-fetch';
 import { DiscordBioError, RatelimitError } from './errors';
 import { BASE_URL, VERSION, Endpoints, PARAM_INDICATOR } from './routes';
-import { DetailedPeerCertificate } from 'tls';
+import { Bucket } from './bucket';
+import { Collection, CollectionOptions } from './collection';
+
+export interface ClientOptions {
+  cache?: boolean | {
+    userProfiles?: boolean | CollectionOptions<string, Details.Payload>,
+  }
+}
 
 /**
  * The main REST client for interfacing with discord.bio.
  */
 export class Client {
+    /**
+     * The ratelimit bucket that helps prevent ratelimits. Not implemented yet
+     */
+    public bucket: Bucket = new Bucket();
+
     /**
      * The most recently recieved ratelimit headers, if any.
      */
@@ -16,6 +28,23 @@ export class Client {
       [HeaderNames.RATELIMIT_RESET]: null,
       [HeaderNames.RATELIMIT_REMAINING]: null,
       [HeaderNames.RATELIMIT_LIMIT]: null
+    }
+
+    /**
+     * The cache of recently fetched user profiles.
+     */
+    public userProfiles: Collection<string, Details.Response> | null
+
+    constructor (options: ClientOptions = {}) {
+      if (options.cache === false) {
+        this.userProfiles = null;
+      } else {
+        let userProfileOptions = {};
+        if (options.cache !== true && typeof options.cache?.userProfiles === 'object') {
+          userProfileOptions = options.cache?.userProfiles;
+        }
+        this.userProfiles = new Collection<string, Details.Response>(userProfileOptions);
+      }
     }
 
     /**
@@ -36,10 +65,15 @@ export class Client {
      * @param searchQuery The user ID or slug to search for
      */
     public async fetchUserDetails (searchQuery: string): Promise<Details.Response> {
+      if (this.userProfiles?.get(searchQuery)) {
+        return <Details.Response> this.userProfiles.get(searchQuery);
+      }
       const path = this.constructPath(Endpoints.DETAILS, {
         [Endpoints.DETAILS.split(PARAM_INDICATOR)[1]]: searchQuery
       });
-      return await this.request(path);
+      const res = await this.request(path);
+      if (this.userProfiles) this.userProfiles.set(searchQuery, res);
+      return res;
     }
 
     /**

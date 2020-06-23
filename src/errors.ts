@@ -2,7 +2,7 @@ import { Request, Response as NodeFetchResponse } from 'node-fetch';
 
 import { HeaderNames } from './types';
 
-const RATELIMIT_STATUS_CODE = 429;
+import { RATELIMIT_STATUS_CODE } from './constants';
 
 export class DiscordBioError extends Error {
     public readonly request: Request
