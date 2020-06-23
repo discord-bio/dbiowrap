@@ -1,6 +1,6 @@
 {
   "name": "dbiowrap",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A wrapper for the discord.bio REST API",
   "main": "lib/index.js",
   "directories": {
@@ -15,6 +15,12 @@
   },
   "author": "Jacherr",
   "license": "MIT",
+  "dependencies": {
+    "node-fetch": "2.6.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "1.6.9"
+  },
   "bugs": {
     "url": "https://github.com/Jacherr/dbiowrap/issues"
   },
