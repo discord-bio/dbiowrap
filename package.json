@@ -1,0 +1,22 @@
+{
+  "name": "dbiowrap",
+  "version": "1.0.0",
+  "description": "A wrapper for the discord.bio REST API",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jacherr/dbiowrap.git"
+  },
+  "author": "Jacherr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jacherr/dbiowrap/issues"
+  },
+  "homepage": "https://github.com/Jacherr/dbiowrap#readme"
+}
