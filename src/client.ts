@@ -77,7 +77,6 @@ export class Client {
           discord: new Details.Discord(res.payload.discord)
         }
       }));
-      res.payload.discord = new Details.Discord(res.payload.discord);
 
       if (this.userProfiles) this.userProfiles.set(searchQuery, res);
       return res;
