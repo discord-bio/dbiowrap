@@ -50,7 +50,7 @@ export class Collection<K, V> {
       this.cache.clear();
     }
 
-    clone (): Collection<K, V> {
+    public clone (): Collection<K, V> {
       return new Collection<K, V>({ values: this.cache });
     }
 
@@ -67,7 +67,7 @@ export class Collection<K, V> {
       return this.cache.forEach(func, thisArg);
     }
 
-    filter (func: (v: V, k: K) => boolean): Array<V> {
+    public filter (func: (v: V, k: K) => boolean): Array<V> {
       const map = [];
       for (const [key, value] of this) {
         if (func(value, key)) {
@@ -77,7 +77,7 @@ export class Collection<K, V> {
       return map;
     }
 
-    find (func: (v: V, k: K) => boolean): V | undefined {
+    public find (func: (v: V, k: K) => boolean): V | undefined {
       for (const [key, value] of this) {
         if (func(value, key)) {
           return value;
@@ -86,7 +86,7 @@ export class Collection<K, V> {
       return undefined;
     }
 
-    first (): V | undefined {
+    public first (): V | undefined {
       for (const [, value] of this) {
         return value;
       }
@@ -97,7 +97,7 @@ export class Collection<K, V> {
       return this.cache.get(key);
     }
 
-    has (key: K): boolean {
+    public has (key: K): boolean {
       return this.cache.has(key);
     }
 
@@ -114,11 +114,11 @@ export class Collection<K, V> {
       }, this.intervalType.interval);
     }
 
-    keys (): IterableIterator<K> {
+    public keys (): IterableIterator<K> {
       return this.cache.keys();
     }
 
-    map (func: (v: V, k: K) => any): Array<any> {
+    public map (func: (v: V, k: K) => any): Array<any> {
       const map = [];
       for (const [key, value] of this) {
         map.push(func(value, key));
@@ -126,7 +126,7 @@ export class Collection<K, V> {
       return map;
     }
 
-    reduce (func: (intial: any, v: V) => any, initialValue?: any): any {
+    public reduce (func: (intial: any, v: V) => any, initialValue?: any): any {
       let reduced = initialValue;
       for (const [, value] of this) {
         reduced = func(reduced, value);
@@ -134,7 +134,7 @@ export class Collection<K, V> {
       return reduced;
     }
 
-    some (func: (v: V, k: K) => boolean): boolean {
+    public some (func: (v: V, k: K) => boolean): boolean {
       for (const [key, value] of this) {
         if (func(value, key)) {
           return true;
@@ -167,7 +167,7 @@ export class Collection<K, V> {
       if (this.shouldStartInterval) this.startInterval();
     }
 
-    toString (): string {
+    public toString (): string {
       return this[Symbol.toStringTag];
     }
 
