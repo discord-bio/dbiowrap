@@ -1,3 +1,43 @@
+class IUser {
+    private _id!: BigInt;
+    private _avatar!: BigInt;
+    private animated!: boolean;
+    private tag: string;
+    public public_flags: number;
+
+    constructor(data: any) {
+        this.id = data.id;
+        this.tag = `${data.username}#${data.discriminator}`;
+        this.avatar = data.avatar;
+        this.public_flags = data.public_flags;
+    }
+
+    get id() {
+        return this._id.toString();
+    }
+
+    set id(value) {
+        this._id = BigInt(value);
+    }
+
+    get avatar() {
+        return (this.animated ? 'a_' : '') + this._avatar.toString(16);
+    }
+
+    set avatar(value) {
+        this.animated = value.startsWith('a_');
+        this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
+    }
+
+    get username() {
+        return this.tag.substr(0, this.tag.lastIndexOf('#'));
+    }
+
+    get discriminator() {
+        return this.tag.substr(this.tag.lastIndexOf('#') + 1);
+    }
+}
+
 export namespace Details {
     export interface Response {
         payload: Payload;
@@ -8,13 +48,7 @@ export namespace Details {
         discord: Discord;
     }
 
-    export interface Discord {
-        id: string;
-        username: string;
-        avatar: string;
-        discriminator: string;
-        public_flags: number;
-    }
+    export class Discord extends IUser {}
 
     export interface User {
         details: Details;
@@ -26,7 +60,7 @@ export namespace Details {
         slug: string;
         user_id: string;
         flags: number;
-        verified: number;
+        verified: boolean;
         created_at: Date;
         description: string;
         location: string;
@@ -64,16 +98,11 @@ export namespace TopLikes {
         user: User;
     }
 
-    export interface DiscordUser {
-        id: string;
-        username: string;
-        discriminator: string;
-        avatar: string;
-    }
+    export class DiscordUser extends IUser {}
 
     export interface User {
         slug: string;
-        verified: number;
+        verified: boolean;
         staff: boolean;
         premium: boolean;
         likes: number;
