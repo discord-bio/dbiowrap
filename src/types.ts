@@ -3,53 +3,8 @@
 
 import { HeaderNames } from './constants';
 
-export interface IUserOptions {
-    id: string,
-    username: string,
-    discriminator: string,
-    public_flags: number,
-    avatar: string
-}
-
-class IUser {
-    private _id!: BigInt;
-    private _avatar!: BigInt;
-    private animated!: boolean;
-    private tag: string;
-    public public_flags: number;
-
-    constructor (data: IUserOptions) {
-      this.id = data.id;
-      this.tag = `${data.username}#${data.discriminator}`;
-      this.avatar = data.avatar;
-      this.public_flags = data.public_flags;
-    }
-
-    get id () {
-      return this._id.toString();
-    }
-
-    set id (value) {
-      this._id = BigInt(value);
-    }
-
-    get avatar () {
-      return (this.animated ? 'a_' : '') + this._avatar.toString(16);
-    }
-
-    set avatar (value) {
-      this.animated = value.startsWith('a_');
-      this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
-    }
-
-    get username () {
-      return this.tag.substr(0, this.tag.lastIndexOf('#'));
-    }
-
-    get discriminator () {
-      return this.tag.substr(this.tag.lastIndexOf('#') + 1);
-    }
-}
+import { IDiscordUser } from './structures/discorduser'
+import { IUserDetails } from './structures/userdetails'
 
 export namespace Details {
     export interface Response {
@@ -61,7 +16,7 @@ export namespace Details {
         discord: Discord;
     }
 
-    export class Discord extends IUser {}
+    export class Discord extends IDiscordUser {}
 
     export interface User {
         details: Details;
@@ -69,23 +24,7 @@ export namespace Details {
         userConnections: UserConnections;
     }
 
-    export interface Details {
-        slug: string;
-        user_id: string;
-        flags: number;
-        verified: boolean;
-        created_at: Date;
-        description: string;
-        location: string;
-        gender: number;
-        birthday: Date;
-        email: string;
-        occupation: string;
-        banner: string;
-        premium: boolean;
-        staff: boolean;
-        likes: number;
-    }
+    export class Details extends IUserDetails {}
 
     export interface DiscordConnection {
         connection_type: string;
@@ -111,7 +50,7 @@ export namespace TopLikes {
         user: User;
     }
 
-    export class DiscordUser extends IUser {}
+    export class DiscordUser extends IDiscordUser {}
 
     export interface User {
         slug: string;

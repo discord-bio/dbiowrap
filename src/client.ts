@@ -74,7 +74,10 @@ export class Client {
       });
       const res: Details.Response = await this.request(path).then((res: Details.Response) => ({
         payload: {
-          ...res.payload,
+          user: {
+            ...res.payload.user,
+            details: new Details.Details(res.payload.user.details)
+          },
           discord: new Details.Discord(res.payload.discord)
         }
       }));
