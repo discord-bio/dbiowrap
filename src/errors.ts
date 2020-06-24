@@ -1,8 +1,6 @@
 import { Request, Response as NodeFetchResponse } from 'node-fetch';
 
-import { HeaderNames } from './types';
-
-import { RATELIMIT_STATUS_CODE } from './constants';
+import { HeaderNames, StatusCodes } from './types';
 
 export class DiscordBioError extends Error {
     public readonly request: Request
@@ -21,8 +19,8 @@ export class DiscordBioError extends Error {
 export class RatelimitError extends DiscordBioError {
   constructor (text: string, request: Request, response: NodeFetchResponse) {
     super(text, request, response);
-    if (response.status !== RATELIMIT_STATUS_CODE) {
-      throw new Error(`Invalid ratelimit status code: ${response.status}. Expected: ${RATELIMIT_STATUS_CODE}`);
+    if (response.status !== StatusCodes.RATELIMIT) {
+      throw new Error(`Invalid ratelimit status code: ${response.status}. Expected: ${StatusCodes.RATELIMIT}`);
     }
   }
 
@@ -46,6 +44,6 @@ export class RatelimitError extends DiscordBioError {
   }
 
   get statusCode (): number {
-    return RATELIMIT_STATUS_CODE;
+    return StatusCodes.RATELIMIT;
   }
 }
