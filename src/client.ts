@@ -1,10 +1,11 @@
-import { RatelimitHeaders, HeaderNames, StatusCodes, Details, TopLikes } from './types';
-
 import fetch, { Request, Response as NodeFetchResponse, Headers } from 'node-fetch';
+
+import { RatelimitHeaders, Details, TopLikes } from './types';
 import { DiscordBioError, RatelimitError } from './errors';
 import { BASE_URL, VERSION, Endpoints, PARAM_INDICATOR } from './routes';
 import { Bucket } from './bucket';
 import { Collection, CollectionOptions } from './collection';
+import { StatusCodes, HeaderNames } from './constants';
 
 export interface ClientOptions {
   cache?: boolean | {
@@ -103,16 +104,18 @@ export class Client {
       const request = new Request(path);
       const response = await fetch(request);
       this.updateRatelimitHeaders(response.headers);
-      if (![StatusCodes.SUCCESS, StatusCodes.RATELIMIT].includes(response.status)) {
-        throw new DiscordBioError(await response.text(), request, response);
-      } else if (response.status === StatusCodes.RATELIMIT) {
-        throw new RatelimitError(await response.text(), request, response);
-      }
       let json;
       try {
         json = await response.json();
       } catch (e) {
         throw new DiscordBioError('Invalid JSON returned from request - API down?', request, response);
+      }
+      if (![StatusCodes.SUCCESS, StatusCodes.RATELIMIT].includes(response.status)) {
+        const throwValue = json.message || await response.text();
+        throw new DiscordBioError(throwValue, request, response);
+      } else if (response.status === StatusCodes.RATELIMIT) {
+        const throwValue = json.message || await response.text();
+        throw new RatelimitError(throwValue, request, response);
       }
       return json;
     }

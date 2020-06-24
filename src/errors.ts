@@ -1,6 +1,6 @@
 import { Request, Response as NodeFetchResponse } from 'node-fetch';
 
-import { HeaderNames, StatusCodes } from './types';
+import { StatusCodes, HeaderNames } from './constants';
 
 export class DiscordBioError extends Error {
     public readonly request: Request

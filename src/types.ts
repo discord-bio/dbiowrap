@@ -1,3 +1,8 @@
+// ESLint can't find BigInt for some reason
+/* global BigInt */
+
+import { HeaderNames } from './constants';
+
 export interface IUserOptions {
     id: string,
     username: string,
@@ -13,36 +18,36 @@ class IUser {
     private tag: string;
     public public_flags: number;
 
-    constructor(data: IUserOptions) {
-        this.id = data.id;
-        this.tag = `${data.username}#${data.discriminator}`;
-        this.avatar = data.avatar;
-        this.public_flags = data.public_flags;
+    constructor (data: IUserOptions) {
+      this.id = data.id;
+      this.tag = `${data.username}#${data.discriminator}`;
+      this.avatar = data.avatar;
+      this.public_flags = data.public_flags;
     }
 
-    get id() {
-        return this._id.toString();
+    get id () {
+      return this._id.toString();
     }
 
-    set id(value) {
-        this._id = BigInt(value);
+    set id (value) {
+      this._id = BigInt(value);
     }
 
-    get avatar() {
-        return (this.animated ? 'a_' : '') + this._avatar.toString(16);
+    get avatar () {
+      return (this.animated ? 'a_' : '') + this._avatar.toString(16);
     }
 
-    set avatar(value) {
-        this.animated = value.startsWith('a_');
-        this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
+    set avatar (value) {
+      this.animated = value.startsWith('a_');
+      this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
     }
 
-    get username() {
-        return this.tag.substr(0, this.tag.lastIndexOf('#'));
+    get username () {
+      return this.tag.substr(0, this.tag.lastIndexOf('#'));
     }
 
-    get discriminator() {
-        return this.tag.substr(this.tag.lastIndexOf('#') + 1);
+    get discriminator () {
+      return this.tag.substr(this.tag.lastIndexOf('#') + 1);
     }
 }
 
@@ -118,19 +123,8 @@ export namespace TopLikes {
     }
 }
 
-export enum HeaderNames {
-    RATELIMIT_RESET = 'x-ratelimit-reset',
-    RATELIMIT_REMAINING = 'x-ratelimit-remaining',
-    RATELIMIT_LIMIT = 'x-ratelimit-limit'
-}
-
 export interface RatelimitHeaders {
     [HeaderNames.RATELIMIT_RESET]: number | null,
     [HeaderNames.RATELIMIT_REMAINING]: number | null,
     [HeaderNames.RATELIMIT_LIMIT]: number | null
-}
-
-export enum StatusCodes {
-    SUCCESS = 200,
-    RATELIMIT = 429
 }
