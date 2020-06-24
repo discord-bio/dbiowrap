@@ -1,6 +1,6 @@
 {
   "name": "dbiowrap",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A wrapper for the discord.bio REST API",
   "main": "lib/index.js",
   "directories": {
