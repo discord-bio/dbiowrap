@@ -1,6 +1,8 @@
 # dbiowrap
 A wrapper for the discord.bio REST API.
 
+[Documentation](https://jacherr.github.io/dbiowrap)
+
 ## Install
 `npm i dbiowrap`
 
