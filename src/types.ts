@@ -1,3 +1,11 @@
+export interface IUserOptions {
+    id: string,
+    username: string,
+    discriminator: string,
+    public_flags: number,
+    avatar: string
+}
+
 class IUser {
     private _id!: BigInt;
     private _avatar!: BigInt;
@@ -5,7 +13,7 @@ class IUser {
     private tag: string;
     public public_flags: number;
 
-    constructor(data: any) {
+    constructor(data: IUserOptions) {
         this.id = data.id;
         this.tag = `${data.username}#${data.discriminator}`;
         this.avatar = data.avatar;
