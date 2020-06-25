@@ -75,13 +75,13 @@ export namespace Details {
         flags: number;
         verified: boolean;
         created_at: Date;
-        description: string;
-        location: string;
-        gender: number;
-        birthday: Date;
-        email: string;
-        occupation: string;
-        banner: string;
+        description: string | null;
+        location: string | null;
+        gender: number | null;
+        birthday: Date | null;
+        email: string | null;
+        occupation: string | null;
+        banner: string | null;
         premium: boolean;
         staff: boolean;
         likes: number;
@@ -95,9 +95,11 @@ export namespace Details {
     }
 
     export interface UserConnections {
-        github: string;
-        website: string;
-        instagram: string;
+        github: string | null;
+        website: string | null;
+        instagram: string | null;
+        snapchat: string | null;
+        linkedin: string | null;
     }
 }
 
@@ -119,7 +121,7 @@ export namespace TopLikes {
         staff: boolean;
         premium: boolean;
         likes: number;
-        description: null | string;
+        description: string | null;
     }
 }
 
