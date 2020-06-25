@@ -34,9 +34,11 @@ export namespace Details {
     }
 
     export interface UserConnections {
-        github: string;
-        website: string;
-        instagram: string;
+        github: string | null;
+        website: string | null;
+        instagram: string | null;
+        snapchat: string | null;
+        linkedin: string | null;
     }
 }
 
@@ -58,7 +60,7 @@ export namespace TopLikes {
         staff: boolean;
         premium: boolean;
         likes: number;
-        description: null | string;
+        description: string | null;
     }
 }
 
