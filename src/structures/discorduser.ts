@@ -3,7 +3,7 @@ export interface IUserOptions {
     username: string,
     discriminator: string,
     public_flags: number,
-    avatar: string
+    avatar: string | null
 }
 
 /**
@@ -11,7 +11,7 @@ export interface IUserOptions {
  */
 export class IDiscordUser {
     private _id!: BigInt;
-    private _avatar!: BigInt;
+    private _avatar!: BigInt | null;
     private animated!: boolean;
     private tag: string;
     public public_flags: number;
@@ -32,12 +32,16 @@ export class IDiscordUser {
     }
 
     get avatar () {
+      if(!this._avatar) return null;
       return (this.animated ? 'a_' : '') + this._avatar.toString(16);
     }
 
     set avatar (value) {
-      this.animated = value.startsWith('a_');
-      this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
+      if(!value) this._avatar = null;
+      else {
+        this.animated = value.startsWith('a_');
+        this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
+      }
     }
 
     get username () {
