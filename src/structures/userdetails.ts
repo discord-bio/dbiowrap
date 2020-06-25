@@ -8,11 +8,11 @@ export interface IUserDetailsOptions {
     slug: string;
     user_id: string;
     verified: boolean;
-    created_at: Date | null;
+    created_at: string | null;
     description: string | null;
     location: string | null;
     gender: number | null;
-    birthday: Date | null;
+    birthday: string | null;
     email: string | null;
     occupation: string | null;
     banner: string | null;
@@ -44,11 +44,11 @@ export class IUserDetails {
         if(options.verified) this._flags |= UserDetailsFlags.VERIFIED;
         if(options.premium) this._flags |= UserDetailsFlags.PREMIUM;
         if(options.staff) this._flags |= UserDetailsFlags.STAFF;
-        this._createdAt = options.created_at?.getTime() || null
+        this._createdAt = options.created_at ? new Date(options.created_at).getTime() : null
         this.description = options.description;
         this.location = options.location;
         this.gender = options.gender;
-        this._birthday = options.birthday?.getTime() || null
+        this._birthday = options.birthday ? new Date(options.birthday).getTime() : null
         this.email = options.email;
         this.occupation = options.occupation;
         this.banner = options.banner;
@@ -57,7 +57,7 @@ export class IUserDetails {
 
     get birthday() {
         if(this._birthday) {
-            return new Date(this._birthday);
+            return new Date(this._birthday).toISOString();
         } else {
             return null;
         }
@@ -65,7 +65,7 @@ export class IUserDetails {
 
     get created_at () {
         if(this._createdAt) {
-            return new Date(this._createdAt);
+            return new Date(this._createdAt).toISOString();
         } else {
             return null;
         }

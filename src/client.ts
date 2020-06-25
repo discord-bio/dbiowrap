@@ -107,17 +107,15 @@ export class Client {
       const request = new Request(path);
       const response = await fetch(request);
       this.updateRatelimitHeaders(response.headers);
-      let json;
+      let json: any = await response.text();
       try {
-        json = await response.json();
-      } catch (e) {
-        throw new DiscordBioError('Invalid JSON returned from request - API down?', request, response);
-      }
+        json = JSON.parse(json)
+      } catch (e) {}
       if (![StatusCodes.SUCCESS, StatusCodes.RATELIMIT].includes(response.status)) {
-        const throwValue = json.message || await response.text();
+        const throwValue = json.message || json;
         throw new DiscordBioError(throwValue, request, response);
       } else if (response.status === StatusCodes.RATELIMIT) {
-        const throwValue = json.message || await response.text();
+        const throwValue = json.message || json;
         throw new RatelimitError(throwValue, request, response);
       }
       return json;
