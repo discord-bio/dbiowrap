@@ -13,7 +13,7 @@ export class IDiscordUser {
     private _id!: BigInt;
     private _avatar!: BigInt | null;
     private animated!: boolean;
-    private tag: string;
+    public tag: string;
     public public_flags: number;
 
     constructor (data: IUserOptions) {
