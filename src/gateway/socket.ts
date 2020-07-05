@@ -5,6 +5,7 @@ import { SocketManager } from './socketmanager';
 import WebSocket, { ClientOptions } from 'ws';
 import { BASE_URL } from '../routes';
 import { EventEmitter } from 'events';
+import { SocketEvents } from './constants';
 
 export interface SocketOptions {
   autoReconnect: boolean
@@ -13,10 +14,10 @@ export interface SocketOptions {
 }
 
 export declare interface Socket {
-  on(event: 'close', listener: (code: number, reason: string) => void): this;
-  on(event: 'error', listener: (err: Error) => void): this;
-  on(event: 'raw', listener: (data: WebSocket.Data) => void): this;
-  on(event: 'open', listener: () => void): this;
+  on(event: SocketEvents.CLOSE, listener: (code: number, reason: string) => void): this;
+  on(event: SocketEvents.ERROR, listener: (err: Error) => void): this;
+  on(event: SocketEvents.RAW, listener: (data: WebSocket.Data) => void): this;
+  on(event: SocketEvents.OPEN, listener: () => void): this;
   on(event: string, listener: Function): this;
 }
 
@@ -42,15 +43,15 @@ export class Socket extends EventEmitter {
     }
 
     private initEvents (autoReconnect: boolean, options?: ClientOptions) {
-      this.socket.on('close', (code, reason) => {
-        this.emit('close', code, reason);
+      this.socket.on(SocketEvents.CLOSE, (code, reason) => {
+        this.emit(SocketEvents.CLOSE, code, reason);
         if (autoReconnect) this.connect(autoReconnect, options);
       });
 
-      this.socket.on('error', (err) => this.emit('error', err));
-      this.socket.on('message', (data) => {
-        this.emit('raw', data);
+      this.socket.on(SocketEvents.ERROR, (err) => this.emit(SocketEvents.ERROR, err));
+      this.socket.on(SocketEvents.MESSAGE, (data) => {
+        this.emit(SocketEvents.RAW, data);
       });
-      this.socket.on('open', () => this.emit('open'));
+      this.socket.on(SocketEvents.OPEN, () => this.emit(SocketEvents.OPEN));
     }
 }

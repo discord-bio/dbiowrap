@@ -2,6 +2,7 @@ import { Socket } from './socket';
 import { EventEmitter } from 'events';
 import * as GatewayEvents from './gatewayevents';
 import { ClientOptions } from 'ws';
+import { SocketManagerEvents } from './constants';
 
 export const AUTO_RECONNECT_DEFAULT = true;
 export const CONNECTION_TIMEOUT_DEFAULT = 10000;
@@ -14,10 +15,10 @@ export interface SocketManagerOptions {
 }
 
 export declare interface SocketManager {
-  on(event: 'metrics', listener: (data: GatewayEvents.Metrics) => void): this;
-  on(event: 'profileUpdate', listener: (data: GatewayEvents.ProfileUpdate) => void): this;
-  on(event: 'subscribe', listener: (data: GatewayEvents.Subscribe) => void): this;
-  on(event: 'unsubscribe', listener: (data: GatewayEvents.Unsubscribe) => void): this;
+  on(event: SocketManagerEvents.METRICS, listener: (data: GatewayEvents.Metrics) => void): this;
+  on(event: SocketManagerEvents.PROFILE_UPDATE, listener: (data: GatewayEvents.ProfileUpdate) => void): this;
+  on(event: SocketManagerEvents.SUBSCRIBE, listener: (data: GatewayEvents.Subscribe) => void): this;
+  on(event: SocketManagerEvents.UNSUBSCRIBE, listener: (data: GatewayEvents.Unsubscribe) => void): this;
   on(event: string, listener: Function): this;
 }
 
