@@ -40,12 +40,8 @@ export class SocketManager {
     }
 
     public openAll() {
-      this.sockets.map((socket, key) => {
-        this.sockets.set(key, new Socket(this, key, {
-          autoReconnect: this._autoReconnect,
-          connectionTimeout: this._connectionTimeout,
-          webSocketOptions: this._webSocketOptions
-        }))
+      this.sockets.map((socket) => {
+        socket.connect(this._autoReconnect, this._webSocketOptions)
       })
     }
     
