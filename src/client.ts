@@ -6,11 +6,14 @@ import { BASE_URL, VERSION, Endpoints, PARAM_INDICATOR } from './routes';
 import { Bucket } from './bucket';
 import { Collection, CollectionOptions } from './collection';
 import { StatusCodes, HeaderNames } from './constants';
+import { SocketManager } from './gateway/socketmanager';
 
 export interface ClientOptions {
   cache?: boolean | {
     userProfiles?: boolean | CollectionOptions<string, Details.Payload>,
-  }
+  },
+  rest?: boolean,
+  ws?: boolean
 }
 
 /**
@@ -21,6 +24,8 @@ export class Client {
      * The ratelimit bucket that helps prevent ratelimits. Not implemented yet
      */
     public bucket: Bucket = new Bucket();
+
+    public socketManager: SocketManager | null;
 
     /**
      * The most recently recieved ratelimit headers, if any.
@@ -37,6 +42,12 @@ export class Client {
     public userProfiles: Collection<string, Details.Response> | null
 
     constructor (options: ClientOptions = {}) {
+      if (options.ws !== false) {
+        this.socketManager = new SocketManager();
+      } else {
+        this.socketManager = null;
+      }
+
       if (options.cache === false) {
         this.userProfiles = null;
       } else {
@@ -109,7 +120,7 @@ export class Client {
       this.updateRatelimitHeaders(response.headers);
       let json: any = await response.text();
       try {
-        json = JSON.parse(json)
+        json = JSON.parse(json);
       } catch (e) {}
       if (![StatusCodes.SUCCESS, StatusCodes.RATELIMIT].includes(response.status)) {
         const throwValue = json.message || json;

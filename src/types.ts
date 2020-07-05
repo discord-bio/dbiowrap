@@ -3,8 +3,8 @@
 
 import { HeaderNames } from './constants';
 
-import { IDiscordUser } from './structures/discorduser'
-import { IUserDetails } from './structures/userdetails'
+import { IDiscordUser } from './structures/discorduser';
+import { IUserDetails } from './structures/userdetails';
 
 export namespace Details {
     export interface Response {

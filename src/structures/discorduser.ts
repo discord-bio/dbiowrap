@@ -1,3 +1,6 @@
+// ESLint can't find BigInt for some reason
+/* global BigInt */
+
 export interface IUserOptions {
     id: string,
     username: string,
@@ -32,12 +35,12 @@ export class IDiscordUser {
     }
 
     get avatar () {
-      if(!this._avatar) return null;
+      if (!this._avatar) return null;
       return (this.animated ? 'a_' : '') + this._avatar.toString(16);
     }
 
     set avatar (value) {
-      if(!value) this._avatar = null;
+      if (!value) this._avatar = null;
       else {
         this.animated = value.startsWith('a_');
         this._avatar = BigInt(`0x${this.animated ? value.substr(2) : value}`);
