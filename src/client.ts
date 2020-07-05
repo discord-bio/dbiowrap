@@ -72,7 +72,7 @@ export class Client {
       const path = this.constructPath(Endpoints.DETAILS, {
         [Endpoints.DETAILS.split(PARAM_INDICATOR)[1]]: searchQuery
       });
-      const res: Details.Response = await this.request(path).then((res: Details.Response) => ({
+      const res: Details.Response = await this.request<Details.Response>(path).then((res: Details.Response) => ({
         payload: {
           ...res.payload,
           discord: new Details.Discord(res.payload.discord)
@@ -88,7 +88,7 @@ export class Client {
      */
     public async fetchTopUsers (): Promise<TopLikes.Response> {
       const path = this.constructPath(Endpoints.TOP_LIKES);
-      return this.request(path).then((res: TopLikes.Response) => ({
+      return this.request<TopLikes.Response>(path).then((res: TopLikes.Response) => ({
         payload: res.payload.map(x => ({
           ...x,
           discord: new TopLikes.DiscordUser(x.discord)
@@ -97,10 +97,10 @@ export class Client {
     }
 
     /**
-     * Sends a request to a specified path and return the response as json. Mostly for internal use. This function updates the stored ratelimit headers.
+     * Sends a request to a specified path and return the response as json. This function updates the stored ratelimit headers. This function is internal and should not be used in end-user code.
      * @param path The path to send the request to
      */
-    public async request (path: string): Promise<any> {
+    private async request<T> (path: string): Promise<T> {
       const request = new Request(path);
       const response = await fetch(request);
       this.updateRatelimitHeaders(response.headers);
