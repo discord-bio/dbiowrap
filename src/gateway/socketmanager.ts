@@ -1,8 +1,6 @@
 import { Socket } from './socket';
-import { EventEmitter } from 'events';
-import * as GatewayEvents from './gatewayevents';
 import { ClientOptions } from 'ws';
-import { SocketManagerEvents } from './constants';
+import { Collection } from '../collection';
 
 export const AUTO_RECONNECT_DEFAULT = true;
 export const CONNECTION_TIMEOUT_DEFAULT = 10000;
@@ -14,30 +12,61 @@ export interface SocketManagerOptions {
     webSocketOptions?: ClientOptions
 }
 
-export declare interface SocketManager {
-  on(event: SocketManagerEvents.METRICS, listener: (data: GatewayEvents.Metrics) => void): this;
-  on(event: SocketManagerEvents.PROFILE_UPDATE, listener: (data: GatewayEvents.ProfileUpdate) => void): this;
-  on(event: SocketManagerEvents.SUBSCRIBE, listener: (data: GatewayEvents.Subscribe) => void): this;
-  on(event: SocketManagerEvents.UNSUBSCRIBE, listener: (data: GatewayEvents.Unsubscribe) => void): this;
-  on(event: string, listener: Function): this;
-}
-
-export class SocketManager extends EventEmitter {
+export class SocketManager {
     private _autoReconnect: boolean
     private _connectionTimeout: number
-    public sockets: Map<string, Socket> = new Map<string, Socket>()
+    private _webSocketOptions?: ClientOptions
+    public sockets: Collection<string, Socket> = new Collection<string, Socket>()
+
     constructor (options: SocketManagerOptions = {}) {
-      super();
       this._autoReconnect = options.autoReconnect || AUTO_RECONNECT_DEFAULT;
       this._connectionTimeout = options.connectionTimeout || CONNECTION_TIMEOUT_DEFAULT;
+      this._webSocketOptions = options.webSocketOptions;
       if (options.subscribe) {
         options.subscribe.forEach((subscription) => {
           this.sockets.set(subscription, new Socket(this, subscription, {
             autoReconnect: this._autoReconnect,
             connectionTimeout: this._connectionTimeout,
-            webSocketOptions: options.webSocketOptions
+            webSocketOptions: this._webSocketOptions
           }));
         });
       }
+    }
+
+    public closeAll() {
+      this.sockets.map((socket) => {
+        socket.close();
+      })
+    }
+
+    public openAll() {
+      this.sockets.map((socket, key) => {
+        this.sockets.set(key, new Socket(this, key, {
+          autoReconnect: this._autoReconnect,
+          connectionTimeout: this._connectionTimeout,
+          webSocketOptions: this._webSocketOptions
+        }))
+      })
+    }
+    
+    public subscribe(id: string) {
+      this.sockets.set(id, new Socket(this, id, {
+        autoReconnect: this._autoReconnect,
+        connectionTimeout: this._connectionTimeout,
+        webSocketOptions: this._webSocketOptions
+      }))
+    }
+
+    public unsubscribe(id: string) {
+      const socket = this.sockets.get(id);
+      if(!socket) throw new Error('No socket is subscribed to this ID');
+      socket.close();
+    }
+
+    public unsubscribeAll() {
+      this.sockets.map((socket, key) => {
+        socket.close();
+        this.sockets.delete(key);
+      })
     }
 }

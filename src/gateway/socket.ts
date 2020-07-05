@@ -3,9 +3,9 @@
 import { SocketManager } from './socketmanager';
 
 import WebSocket, { ClientOptions } from 'ws';
-import { BASE_URL } from '../routes';
+import { BASE_URL } from '../rest/routes';
 import { EventEmitter } from 'events';
-import { SocketEvents } from './constants';
+import { SocketEvents, SUCCESS_CLOSE_CODE } from './constants';
 
 export interface SocketOptions {
   autoReconnect: boolean
@@ -34,6 +34,10 @@ export class Socket extends EventEmitter {
       this.connect(options.autoReconnect, options.webSocketOptions);
     }
 
+    public close() {
+      this.socket.close(SUCCESS_CLOSE_CODE, 'WebSocket connection closed by client');
+    }
+
     public connect (autoReconnect: boolean, options?: ClientOptions) {
       this.socket = new WebSocket(BASE_URL, {
         ...options,
@@ -45,13 +49,22 @@ export class Socket extends EventEmitter {
     private initEvents (autoReconnect: boolean, options?: ClientOptions) {
       this.socket.on(SocketEvents.CLOSE, (code, reason) => {
         this.emit(SocketEvents.CLOSE, code, reason);
-        if (autoReconnect) this.connect(autoReconnect, options);
+        if (autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect(autoReconnect, options);
       });
 
       this.socket.on(SocketEvents.ERROR, (err) => this.emit(SocketEvents.ERROR, err));
+      
       this.socket.on(SocketEvents.MESSAGE, (data) => {
-        this.emit(SocketEvents.RAW, data);
+        let event;
+        if(typeof data !== 'string') throw new Error(`Non-JSON data returned from socket subscribed to ID: ${this.subscribedTo}`)
+        try {
+          event = JSON.parse(data);
+        } catch(e) {
+          throw new Error(`Invalid JSON returned from socket subscribed to ID: ${this.subscribedTo}`)
+        }
+        this.emit(SocketEvents.RAW, event);
       });
+
       this.socket.on(SocketEvents.OPEN, () => this.emit(SocketEvents.OPEN));
     }
 }

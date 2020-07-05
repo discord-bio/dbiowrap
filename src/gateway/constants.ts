@@ -6,9 +6,4 @@ export enum SocketEvents {
     RAW = 'raw'
 }
 
-export enum SocketManagerEvents {
-    METRICS = 'metrics',
-    PROFILE_UPDATE = 'profileUpdate',
-    SUBSCRIBE = 'subscribe',
-    UNSUBSCRIBE = 'unsubscribe'
-}
+export const SUCCESS_CLOSE_CODE = 1000;

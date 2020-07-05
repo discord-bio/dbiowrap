@@ -1,7 +1,7 @@
 import { RatelimitLimits, HeaderNames } from './constants';
 
 import fetch, { Request as NodeFetchRequest } from 'node-fetch';
-import { Client } from './client';
+import { RestClient } from './restclient';
 
 export interface BucketEntry {
     request: NodeFetchRequest,
