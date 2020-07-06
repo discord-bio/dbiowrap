@@ -33,36 +33,47 @@ export class SocketManager {
       }
     }
 
-    public closeAll() {
+    public closeAll () {
       this.sockets.map((socket) => {
         socket.close();
-      })
+      });
     }
 
-    public openAll() {
+    public openAll () {
       this.sockets.map((socket) => {
-        socket.connect(this._autoReconnect, this._webSocketOptions)
-      })
+        socket.connect(this._autoReconnect, this._webSocketOptions);
+      });
     }
-    
-    public subscribe(id: string) {
+
+    public async pingAll (timeout: number = 1000): Promise<{ subscribe: string, ping: number }[]> {
+      const pings: { subscribe: string, ping: number }[] = [];
+      for (const key of this.sockets.keys()) {
+        const socket = this.sockets.get(key);
+        if (!socket) throw new Error(`Socket subscribed to id ${key} was destroyed before a ping request could be sent`);
+        const ping = await socket.ping(timeout);
+        pings.push({ subscribe: key, ping });
+      }
+      return pings;
+    }
+
+    public subscribe (id: string) {
       this.sockets.set(id, new Socket(this, id, {
         autoReconnect: this._autoReconnect,
         connectionTimeout: this._connectionTimeout,
         webSocketOptions: this._webSocketOptions
-      }))
+      }));
     }
 
-    public unsubscribe(id: string) {
+    public unsubscribe (id: string) {
       const socket = this.sockets.get(id);
-      if(!socket) throw new Error('No socket is subscribed to this ID');
+      if (!socket) throw new Error('No socket is subscribed to this ID');
       socket.close();
     }
 
-    public unsubscribeAll() {
+    public unsubscribeAll () {
       this.sockets.map((socket, key) => {
         socket.close();
         this.sockets.delete(key);
-      })
+      });
     }
 }

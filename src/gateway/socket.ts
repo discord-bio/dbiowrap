@@ -6,11 +6,17 @@ import WebSocket, { ClientOptions } from 'ws';
 import { BASE_URL } from '../rest/routes';
 import { EventEmitter } from 'events';
 import { SocketEvents, SUCCESS_CLOSE_CODE } from './constants';
+import { time } from 'console';
 
 export interface SocketOptions {
   autoReconnect: boolean
   connectionTimeout: number
   webSocketOptions?: ClientOptions
+}
+
+interface PingData {
+  resolve: Function
+  reject: Function
 }
 
 export declare interface Socket {
@@ -22,19 +28,20 @@ export declare interface Socket {
 }
 
 export class Socket extends EventEmitter {
-    private manager: SocketManager
-    private socket!: WebSocket
+    readonly pings: Map<string, PingData> = new Map<string, PingData>()
+    private readonly _manager: SocketManager
+    public socket!: WebSocket
     public subscribedTo: string
 
     constructor (manager: SocketManager, subscribe: string, options: SocketOptions) {
       super();
-      this.manager = manager;
+      this._manager = manager;
       this.subscribedTo = subscribe;
 
       this.connect(options.autoReconnect, options.webSocketOptions);
     }
 
-    public close() {
+    public close () {
       this.socket.close(SUCCESS_CLOSE_CODE, 'WebSocket connection closed by client');
     }
 
@@ -53,18 +60,41 @@ export class Socket extends EventEmitter {
       });
 
       this.socket.on(SocketEvents.ERROR, (err) => this.emit(SocketEvents.ERROR, err));
-      
+
       this.socket.on(SocketEvents.MESSAGE, (data) => {
         let event;
-        if(typeof data !== 'string') throw new Error(`Non-JSON data returned from socket subscribed to ID: ${this.subscribedTo}`)
+        if (typeof data !== 'string') throw new Error(`Non-JSON data returned from socket subscribed to ID: ${this.subscribedTo}`);
         try {
           event = JSON.parse(data);
-        } catch(e) {
-          throw new Error(`Invalid JSON returned from socket subscribed to ID: ${this.subscribedTo}`)
+        } catch (e) {
+          throw new Error(`Invalid JSON returned from socket subscribed to ID: ${this.subscribedTo}`);
         }
         this.emit(SocketEvents.RAW, event);
       });
 
       this.socket.on(SocketEvents.OPEN, () => this.emit(SocketEvents.OPEN));
+    }
+
+    public ping (timeout: number = 1000): Promise<number> {
+      const nonce = `${Date.now()}.${Math.random().toString(36)}`;
+      let timer: NodeJS.Timeout;
+      return new Promise((resolve, reject) => {
+        if (timeout) {
+          timer = setTimeout(() => {
+            this.pings.delete(nonce);
+            reject(new Error(`Pong took longer than ${timeout}ms`));
+          }, timeout);
+        }
+
+        const now = Date.now();
+        // eslint-disable-next-line promise/param-names
+        new Promise((res, rej) => {
+          this.pings.set(nonce, { resolve: res, reject: rej });
+          this.socket.ping(JSON.stringify({ nonce }));
+        }).then(() => {
+          clearTimeout(timer);
+          resolve(Math.round(Date.now() - now));
+        });
+      });
     }
 }
