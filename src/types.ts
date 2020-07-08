@@ -44,10 +44,15 @@ export namespace Details {
 
 export namespace TopLikes {
     export interface Response {
-        payload: Payload[];
+        payload: Payload;
+    }
+    
+    export interface Payload {
+      users: ResponseUser[]
+      totalPages: number
     }
 
-    export interface Payload {
+    export interface ResponseUser {
         discord: DiscordUser;
         user: User;
     }
