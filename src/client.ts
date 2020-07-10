@@ -10,7 +10,8 @@ export enum ClientEvents {
     METRICS = 'metrics',
     PROFILE_UPDATE = 'profileUpdate',
     SUBSCRIBE = 'subscribe',
-    UNSUBSCRIBE = 'unsubscribe'
+    UNSUBSCRIBE = 'unsubscribe',
+    READY = 'ready'
 }
 
 export interface ClientOptions {
@@ -24,6 +25,7 @@ export interface ClientOptions {
 export declare interface Client {
     on(event: ClientEvents.METRICS, listener: (data: GatewayEvents.Metrics) => void): this;
     on(event: ClientEvents.PROFILE_UPDATE, listener: (data: GatewayEvents.ProfileUpdate) => void): this;
+    on(event: ClientEvents.READY, listener: () => void): this;
     on(event: ClientEvents.SUBSCRIBE, listener: (data: GatewayEvents.Subscribe) => void): this;
     on(event: ClientEvents.UNSUBSCRIBE, listener: (data: GatewayEvents.Unsubscribe) => void): this;
     on(event: string, listener: Function): this;
