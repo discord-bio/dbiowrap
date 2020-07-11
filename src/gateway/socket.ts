@@ -5,7 +5,8 @@ import { SocketManager } from './socketmanager';
 import WebSocket, { ClientOptions } from 'ws';
 import { BASE_URL } from '../rest/routes';
 import { EventEmitter } from 'events';
-import { SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D} from './constants';
+import { SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet} from './constants';
+import { rejects } from 'assert';
 
 export interface SocketOptions {
   autoReconnect: boolean
@@ -21,7 +22,7 @@ interface PingData {
 export declare interface Socket {
   on(event: SocketEvents.CLOSE, listener: (code: number, reason: string) => void): this;
   on(event: SocketEvents.ERROR, listener: (err: Error) => void): this;
-  on(event: SocketEvents.RAW, listener: (data: WebSocket.Data) => void): this;
+  on(event: SocketEvents.RAW, listener: (data: [string, any]) => void): this;
   on(event: SocketEvents.OPEN, listener: () => void): this;
   on(event: string, listener: Function): this;
 }
@@ -66,27 +67,13 @@ export class Socket extends EventEmitter {
       this.socket.on(SocketEvents.OPEN, this.onOpen.bind(this));
     }
 
-    public ping (timeout: number = 1000): Promise<number> {
-      const nonce = `${Date.now()}.${Math.random().toString(36)}`;
-      let timer: NodeJS.Timeout;
-      return new Promise((resolve, reject) => {
-        if (timeout) {
-          timer = setTimeout(() => {
-            this.pings.delete(nonce);
-            reject(new Error(`Pong took longer than ${timeout}ms`));
-          }, timeout);
-        }
-
-        const now = Date.now();
-        // eslint-disable-next-line promise/param-names
-        new Promise((res, rej) => {
-          this.pings.set(nonce, { resolve: res, reject: rej });
-          this.socket.ping(JSON.stringify({ nonce }));
-        }).then(() => {
-          clearTimeout(timer);
-          resolve(Math.round(Date.now() - now));
-        });
-      });
+    public ping (): Promise<void> {
+      return new Promise((res, rej) => {
+        this.socket.send(OpCodes.PING, (err?: Error) => {
+          if(err) rej(err);
+          res();
+        })
+      })
     }
 
     private onClose(code: number, reason: string) {
@@ -122,6 +109,9 @@ export class Socket extends EventEmitter {
         console.log(data);
         throw new Error(`Invalid JSON returned from socket subscribed to ID: ${this.subscribedTo}`);
       }
+
+      if(!Array.isArray(event)) return; // All conventional packets are sent as ["EVENT_NAME", DATA], only on connection does this not apply
+
       this.emit(SocketEvents.RAW, event);
     }
 

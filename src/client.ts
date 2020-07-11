@@ -8,10 +8,13 @@ import * as GatewayEvents from './gateway/gatewayevents';
 
 export enum ClientEvents {
     METRICS = 'metrics',
+    PRESENCE = 'presence',
     PROFILE_UPDATE = 'profileUpdate',
+    READY = 'ready',
     SUBSCRIBE = 'subscribe',
+    TOTAL_VIEWING = 'totalViewing',
+    UNKNOWN = 'unknown',
     UNSUBSCRIBE = 'unsubscribe',
-    READY = 'ready'
 }
 
 export interface ClientOptions {
@@ -24,9 +27,12 @@ export interface ClientOptions {
 
 export declare interface Client {
     on(event: ClientEvents.METRICS, listener: (data: GatewayEvents.Metrics) => void): this;
+    on(event: ClientEvents.PRESENCE, listener: (data: GatewayEvents.Presence) => void): this;
     on(event: ClientEvents.PROFILE_UPDATE, listener: (data: GatewayEvents.ProfileUpdate) => void): this;
     on(event: ClientEvents.READY, listener: () => void): this;
     on(event: ClientEvents.SUBSCRIBE, listener: (data: GatewayEvents.Subscribe) => void): this;
+    on(event: ClientEvents.TOTAL_VIEWING, listener: (data: GatewayEvents.TotalViewing) => void): this;
+    on(event: ClientEvents.UNKNOWN, listener: (data: GatewayEvents.Unknown) => void): this;
     on(event: ClientEvents.UNSUBSCRIBE, listener: (data: GatewayEvents.Unsubscribe) => void): this;
     on(event: string, listener: Function): this;
 }
@@ -54,7 +60,7 @@ export class Client extends EventEmitter {
       super();
       if (options.ws !== false) {
         const wsOptions = typeof options.ws !== 'boolean' ? options.ws : {};
-        this.socketManager = new SocketManager(wsOptions);
+        this.socketManager = new SocketManager(this, wsOptions);
       } else {
         this.socketManager = null;
       }
