@@ -1,4 +1,5 @@
-import{ Activity } from './types';
+import { Activity } from './types';
+import { Details } from '../rest/types';
 
 export interface BaseEvent {
     id: string
@@ -9,22 +10,23 @@ export interface Metrics extends BaseEvent {
 }
 
 export interface Presence extends BaseEvent {
-    name: string;
-    type: string;
-    url?: string;
-    createdTimestamp: number;
-    timestamps?: Activity.Timestamp;
-    applicationID?: string | null;
-    details?: string;
-    state?: string;
-    emoji?: Activity.Emoji;
-    party?: Activity.Party;
-    assets?: Activity.Assets;
-    flags?: number;
+    name: string
+    type: string
+    url?: string
+    createdTimestamp: number
+    timestamps?: Activity.Timestamp
+    applicationID?: string | null
+    details?: string
+    state?: string
+    emoji?: Activity.Emoji
+    party?: Activity.Party
+    assets?: Activity.Assets
+    flags?: number
 }
 
 export interface ProfileUpdate extends BaseEvent {
-
+    oldProfile?: Details.Details
+    newProfile: Details.Details
 }
 
 export interface Subscribe extends BaseEvent {
@@ -41,5 +43,5 @@ export interface Unsubscribe extends BaseEvent {
 }
 
 export interface TotalViewing extends BaseEvent {
-    totalViewing: number
+    data: number
 }

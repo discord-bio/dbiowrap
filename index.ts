@@ -10,7 +10,7 @@ import * as Socket from './src/gateway/socket';
 import * as SocketManager from './src/gateway/socketmanager';
 import * as GatewayConstants from './src/gateway/constants';
 import * as GatewayEvents from './src/gateway/gatewayevents';
-import * as Client from './src/client'
+import * as Client from './src/client';
 
 export {
   RestClient,

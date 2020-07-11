@@ -1,3 +1,5 @@
+export const BASE_URL = 'api.discord.bio/bio_ws';
+
 export enum SocketEvents {
     CLOSE = 'close',
     ERROR = 'error',
@@ -12,7 +14,7 @@ export const OUTBOUND_MESSAGE_CODE = 42;
 
 export const VIEWING_PROFILE_D = 'VIEWING';
 
-export const HEARTBEAT_INTERVAL  = 25000;
+export const HEARTBEAT_INTERVAL = 25000;
 
 export enum OpCodes {
     PING = 2
@@ -20,13 +22,18 @@ export enum OpCodes {
 
 export type Packet = [string, any]
 
+export const CONNECT_ARGS = {
+  transport: 'websocket',
+  engineIoVersion: '3'
+};
+
 export const KNOWN_PACKETS = [
-    "PRESENCE",
-    "PROFILE_UPDATE",
-    "TOTAL_VIEWING",
-    "VIEWING",
-    "BANNER_UPDATE",
-    "SUBSCRIBE",
-    "UNSUBSCRIBE",
-    "METRICS"
-]
+  'PRESENCE',
+  'PROFILE_UPDATE',
+  'TOTAL_VIEWING',
+  'VIEWING',
+  'BANNER_UPDATE',
+  'SUBSCRIBE',
+  'UNSUBSCRIBE',
+  'METRICS'
+];

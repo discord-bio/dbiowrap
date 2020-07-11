@@ -4,6 +4,9 @@ import { Collection } from '../collection';
 import { HEARTBEAT_INTERVAL, KNOWN_PACKETS, SocketEvents } from './constants';
 import { Client, ClientEvents } from '../client';
 import { snakeToCamelCase } from '../util';
+import { emit } from 'process';
+import { Profile } from './types';
+import { Details } from '../rest/types';
 
 export const AUTO_RECONNECT_DEFAULT = true;
 export const CONNECTION_TIMEOUT_DEFAULT = 10000;
@@ -34,19 +37,11 @@ export class SocketManager {
       this._webSocketOptions = options.webSocketOptions;
       if (options.subscribe) {
         options.subscribe.forEach((subscription) => {
-          const socket = new Socket(this, subscription, {
-            autoReconnect: this._autoReconnect,
-            connectionTimeout: this._connectionTimeout,
-            webSocketOptions: this._webSocketOptions
-          });
-          this.sockets.set(subscription, socket);
-          socket.on(SocketEvents.RAW, (data) => {
-            this.onMessage(socket, data);
-          })
+          this._setSocket(subscription);
         });
       }
-      if(this.sockets.size > 0) {
-        this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL)
+      if (this.sockets.size > 0) {
+        this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
       }
     }
 
@@ -57,20 +52,31 @@ export class SocketManager {
       }
     }
 
-    public subscribe (id: string) {
-      this.sockets.set(id, new Socket(this, id, {
+    /**
+     * @ignore
+     */
+    private _setSocket (id: string) {
+      const socket = new Socket(this, id, {
         autoReconnect: this._autoReconnect,
         connectionTimeout: this._connectionTimeout,
         webSocketOptions: this._webSocketOptions
-      }));
-      if(!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
+      });
+      this.sockets.set(id, socket);
+      socket.on(SocketEvents.RAW, (data) => {
+        this.onMessage(socket, data);
+      });
+    }
+
+    public subscribe (id: string) {
+      this._setSocket(id);
+      if (!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
     }
 
     public unsubscribe (id: string) {
       const socket = this.sockets.get(id);
       if (!socket) throw new Error('No socket is subscribed to this ID');
       socket.close();
-      if(this.sockets.size === 0 && this._heartbeatInterval) clearInterval(this._heartbeatInterval);
+      if (this.sockets.size === 0 && this._heartbeatInterval) clearInterval(this._heartbeatInterval);
     }
 
     public unsubscribeAll () {
@@ -78,24 +84,45 @@ export class SocketManager {
         socket.close();
         this.sockets.delete(key);
       });
-      if(this._heartbeatInterval) clearInterval(this._heartbeatInterval);
+      if (this._heartbeatInterval) clearInterval(this._heartbeatInterval);
     }
 
-    private onMessage(socket: Socket, data: [string, any]) {
-
+    private onMessage (socket: Socket, data: [string, any]) {
       const eventName: string = data[0];
       const eventData: any = data[1];
 
-      if(!KNOWN_PACKETS.includes(eventName)) {
+      if (!KNOWN_PACKETS.includes(eventName)) {
         return this.client.emit(ClientEvents.UNKNOWN, {
           event: eventName,
           data: eventData
-        })
+        });
       }
 
-      this.client.emit(snakeToCamelCase(eventName.toLowerCase()), {
+      const emitName = snakeToCamelCase(eventName.toLowerCase());
+      let emitData: any;
+
+      /* switch (emitName) {
+        case 'profileUpdate': {
+          const oldProfile = this.client.userProfiles?.get(socket.subscribedTo) || null;
+          const currentProfile: Profile.Profile = eventData;
+          const newProfile: Details.Response = {
+            payload: {
+              user: {},
+              discord: {
+                id: currentProfile.
+              }
+            }
+          }
+          emitData = {
+            oldProfile
+          };
+          break;
+        }
+      } */
+
+      this.client.emit(emitName, {
         id: socket.subscribedTo,
-        ...eventData
-      })
+        ...emitData
+      });
     }
 }

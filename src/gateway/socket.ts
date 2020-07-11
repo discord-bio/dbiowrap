@@ -3,10 +3,8 @@
 import { SocketManager } from './socketmanager';
 
 import WebSocket, { ClientOptions } from 'ws';
-import { BASE_URL } from '../rest/routes';
+import { BASE_URL, SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet, CONNECT_ARGS } from './constants';
 import { EventEmitter } from 'events';
-import { SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet} from './constants';
-import { rejects } from 'assert';
 
 export interface SocketOptions {
   autoReconnect: boolean
@@ -42,52 +40,39 @@ export class Socket extends EventEmitter {
       this.autoReconnect = options.autoReconnect;
       this.options = options;
 
-      this.connect(options.autoReconnect, options.webSocketOptions);
+      this.connect(options.webSocketOptions);
     }
 
     public close () {
       this.socket.close(SUCCESS_CLOSE_CODE, 'WebSocket connection closed by client');
     }
 
-    public connect (autoReconnect: boolean, options?: ClientOptions) {
-      this.socket = new WebSocket(`wss://${BASE_URL}bio_ws/?EIO=3&transport=websocket`, {
+    public connect (options?: ClientOptions) {
+      this.socket = new WebSocket(`wss://${BASE_URL}/?EIO=${CONNECT_ARGS.engineIoVersion}&transport=${CONNECT_ARGS.transport}`, {
         ...options,
         perMessageDeflate: false,
         headers: {
           Connection: 'upgrade'
         }
       });
-      this.initEvents(autoReconnect, options);
+      this._initEvents();
     }
 
-    private initEvents (autoReconnect: boolean, options?: ClientOptions) {
-      this.socket.on(SocketEvents.CLOSE, this.onClose.bind(this))
+    /**
+     * @ignore
+     */
+    private _initEvents () {
+      this.socket.on(SocketEvents.CLOSE, this.onClose.bind(this));
       this.socket.on(SocketEvents.ERROR, this.onError.bind(this));
       this.socket.on(SocketEvents.MESSAGE, this.onMessage.bind(this));
       this.socket.on(SocketEvents.OPEN, this.onOpen.bind(this));
     }
 
-    public ping (): Promise<void> {
-      return new Promise((res, rej) => {
-        this.socket.send(OpCodes.PING, (err?: Error) => {
-          if(err) rej(err);
-          res();
-        })
-      })
-    }
-
-    private onClose(code: number, reason: string) {
-      this.emit(SocketEvents.CLOSE, code, reason);
-      if (this.autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect(this.autoReconnect, this.options.webSocketOptions);
-    }
-
-    private onError(err: Error) {
-      console.error(err.message);
-    }
-
-    private onMessage(data: WebSocket.Data) {
+    /**
+     * @ignore
+     */
+    private _parsePacket (data: string): [string, any] | null {
       let event;
-      if (typeof data !== 'string') throw new Error(`Non-JSON data returned from socket subscribed to ID: ${this.subscribedTo}`);
 
       // This code identifies where the packet status code ends and the json starts since socket.io sends data weirdly
 
@@ -95,27 +80,55 @@ export class Socket extends EventEmitter {
       let jsonStarted = false;
 
       data.split('').forEach(char => {
-        if(!isNaN(parseInt(char)) && !jsonStarted) jsonStartIndex++;
+        if (!isNaN(parseInt(char)) && !jsonStarted) jsonStartIndex++;
         else jsonStarted = true;
-      })
+      });
 
       data = data.slice(jsonStartIndex);
 
-      if(!data) return;   // some packets are just numbers (usually 40), idk why yet
+      if (!data) return null; // some packets are just numbers (usually 40), idk why yet
 
       try {
         event = JSON.parse(data);
       } catch (e) {
-        console.log(data);
         throw new Error(`Invalid JSON returned from socket subscribed to ID: ${this.subscribedTo}`);
       }
 
-      if(!Array.isArray(event)) return; // All conventional packets are sent as ["EVENT_NAME", DATA], only on connection does this not apply
+      if (!Array.isArray(event)) return null; // All conventional packets are sent as ["EVENT_NAME", DATA], only on connection does this not apply (?)
 
+      const eventName: string = event[0];
+      const eventData: any = event[1];
+
+      return [eventName, eventData];
+    }
+
+    public ping (): Promise<number> {
+      const start = Date.now();
+      return new Promise((resolve, reject) => {
+        this.socket.send(OpCodes.PING, (err?: Error) => {
+          if (err) reject(err);
+          resolve(Date.now() - start);
+        });
+      });
+    }
+
+    private onClose (code: number, reason: string) {
+      this.emit(SocketEvents.CLOSE, code, reason);
+      if (this.autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect(this.options.webSocketOptions);
+    }
+
+    private onError (err: Error) {
+      console.error(err.message);
+    }
+
+    private onMessage (data: WebSocket.Data) {
+      if (typeof data !== 'string') return; // shouldnt happen
+      const event = this._parsePacket(data);
+      if (!event) return; // not a valid packet to emit as a conventional event
       this.emit(SocketEvents.RAW, event);
     }
 
-    private onOpen() {
+    private onOpen () {
       this.socket.send(`${OUTBOUND_MESSAGE_CODE}["${VIEWING_PROFILE_D}", "${this.subscribedTo}"]`);
       this.emit(SocketEvents.OPEN);
     }
