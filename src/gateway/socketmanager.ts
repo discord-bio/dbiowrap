@@ -24,11 +24,7 @@ export class SocketManager {
     private _webSocketOptions?: ClientOptions
     private _heartbeatInterval: NodeJS.Timer | null = null;
     public client: Client;
-    public sockets: Collection<string, Socket> = new Collection<string, Socket>({
-      interval: {
-        interval: Infinity
-      }
-    })
+    public sockets: Collection<string, Socket> = new Collection<string, Socket>()
 
     constructor (client: Client, options: SocketManagerOptions = {}) {
       this.client = client;

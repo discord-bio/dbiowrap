@@ -21,7 +21,7 @@ export class Collection<K, V> {
     constructor (options: CollectionOptions<K, V> = {}) {
       this.intervalType = {
         shouldReset: options.interval?.shouldReset || false,
-        interval: options.interval?.interval || 5000
+        interval: options.interval?.interval || Infinity
       };
       this.expire = options.expire ? Math.min(options.expire, <number> this.intervalType.interval) : Infinity;
       this.limit = options.limit || Infinity;
@@ -38,7 +38,7 @@ export class Collection<K, V> {
     }
 
     get shouldStartInterval () {
-      return this.size > 0 && (this._interval ? this._interval.hasRef : true) && isFinite(this.expire);
+      return this.size > 0 && (this._interval ? this._interval.hasRef : true) && isFinite(this.expire) && this.intervalType.interval && isFinite(this.intervalType.interval);
     }
 
     public array (): [K, V][] {
