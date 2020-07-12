@@ -25,8 +25,8 @@ export interface Presence extends BaseEvent {
 }
 
 export interface ProfileUpdate extends BaseEvent {
-    oldProfile?: Details.Details
-    newProfile: Details.Details
+    oldProfile: Details.Payload | null
+    newProfile: Details.Payload
 }
 
 export interface Subscribe extends BaseEvent {

@@ -4,9 +4,9 @@ import { Collection } from '../collection';
 import { HEARTBEAT_INTERVAL, KNOWN_PACKETS, SocketEvents } from './constants';
 import { Client, ClientEvents } from '../client';
 import { snakeToCamelCase } from '../util';
-import { emit } from 'process';
 import { Profile } from './types';
 import { Details } from '../rest/types';
+import * as GatewayEvents from './gatewayevents';
 
 export const AUTO_RECONNECT_DEFAULT = true;
 export const CONNECTION_TIMEOUT_DEFAULT = 10000;
@@ -43,6 +43,13 @@ export class SocketManager {
       if (this.sockets.size > 0) {
         this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
       }
+    }
+
+    private _clientEmit<T>(socket: Socket, event: string, data: T): void {
+      this.client.emit(event, {
+        id: socket.subscribedTo,
+        ...data
+      });
     }
 
     private async heartbeat (timeout: number = 1000): Promise<void> {
@@ -99,30 +106,47 @@ export class SocketManager {
       }
 
       const emitName = snakeToCamelCase(eventName.toLowerCase());
-      let emitData: any;
 
-      /* switch (emitName) {
+      switch (emitName) {
         case 'profileUpdate': {
-          const oldProfile = this.client.userProfiles?.get(socket.subscribedTo) || null;
-          const currentProfile: Profile.Profile = eventData;
-          const newProfile: Details.Response = {
-            payload: {
-              user: {},
-              discord: {
-                id: currentProfile.
-              }
-            }
-          }
-          emitData = {
-            oldProfile
-          };
-          break;
-        }
-      } */
 
-      this.client.emit(emitName, {
-        id: socket.subscribedTo,
-        ...emitData
-      });
-    }
+          // event does not return a discord user, only discord.bio user so discord user must be fetched from cache
+
+          const oldProfile = this.client.userProfiles?.get(socket.subscribedTo)?.payload || null;
+          const currentProfile: Profile.Profile = eventData;
+
+          const newUser: Details.User = {
+              details: new Details.Details(currentProfile.settings),
+              userConnections: currentProfile.userConnections,
+              discordConnections: currentProfile.discordConnections 
+          }
+
+          const newProfile: Details.Payload = {
+              user: newUser,
+              discord: oldProfile?.discord || null
+          }
+
+          this._clientEmit<GatewayEvents.ProfileUpdate>(socket, eventName, {
+            id: socket.subscribedTo,
+            newProfile,
+            oldProfile
+          });
+
+          const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
+
+          if(!cachedProfile) {
+            this.client.userProfiles?.set(socket.subscribedTo, {
+              payload: {
+                user: newUser,
+                discord: null
+              }
+            })
+          } else {
+            cachedProfile.payload.user = newUser;
+          }
+
+          break;
+        } // case
+      } // switch
+    } // onMessage
 }

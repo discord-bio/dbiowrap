@@ -1,5 +1,3 @@
-import { Details } from '../rest/types';
-
 export namespace Activity {
 
     export interface Timestamp {
@@ -35,11 +33,20 @@ export namespace Activity {
 export namespace Profile {
     export interface Profile {
         settings: Settings;
-        connections: Connection[];
+        discordConnections: DiscordConnection[]
+        userConnections: UserConnections;
     }
 
-    export interface Connection {
-        type: string;
+    export interface UserConnections {
+        github: string | null;
+        website: string | null;
+        instagram: string | null;
+        snapchat: string | null;
+        linkedin: string | null;
+    }
+
+    export interface DiscordConnection {
+        connection_type: string;
         name: string;
         url: string;
         icon: string;
@@ -51,11 +58,11 @@ export namespace Profile {
         flags: number;
         verified: boolean;
         premium_type: number;
-        created_at: Date;
+        created_at: string;
         description: string;
         location: string;
         gender: number;
-        birthday: Date;
+        birthday: string;
         email: string;
         occupation: string;
         banner: string;
@@ -63,8 +70,4 @@ export namespace Profile {
         staff: boolean;
         likes: number;
     }
-}
-
-export function gatewayProfileToCachedProfile (gatewayprofile: Profile.Profile): Details.Response | void {
-
 }
