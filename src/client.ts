@@ -7,6 +7,7 @@ import { EventEmitter } from 'events';
 import * as GatewayEvents from './gateway/gatewayevents';
 
 export enum ClientEvents {
+    BANNER_UPDATE = 'bannerUpdate',
     METRICS = 'metrics',
     PRESENCE = 'presence',
     PROFILE_UPDATE = 'profileUpdate',
@@ -25,15 +26,18 @@ export interface ClientOptions {
     ws?: boolean | SocketManagerOptions
 }
 
+// have to use string literals for these types
+// because autofill of events doesn't work
+// when only the enum is used :(
 export declare interface Client {
-    on(event: ClientEvents.METRICS, listener: (data: GatewayEvents.Metrics) => void): this;
-    on(event: ClientEvents.PRESENCE, listener: (data: GatewayEvents.Presence) => void): this;
-    on(event: ClientEvents.PROFILE_UPDATE, listener: (data: GatewayEvents.ProfileUpdate) => void): this;
-    on(event: ClientEvents.READY, listener: () => void): this;
-    on(event: ClientEvents.SUBSCRIBE, listener: (data: GatewayEvents.Subscribe) => void): this;
-    on(event: ClientEvents.TOTAL_VIEWING, listener: (data: GatewayEvents.TotalViewing) => void): this;
-    on(event: ClientEvents.UNKNOWN, listener: (data: GatewayEvents.Unknown) => void): this;
-    on(event: ClientEvents.UNSUBSCRIBE, listener: (data: GatewayEvents.Unsubscribe) => void): this;
+    on(event: ClientEvents.BANNER_UPDATE | 'bannerUpdate', listener: (data: GatewayEvents.BannerUpdate) => void): this;
+    on(event: ClientEvents.METRICS | 'metrics', listener: (data: GatewayEvents.Metrics) => void): this;
+    on(event: ClientEvents.PRESENCE | 'presence', listener: (data: GatewayEvents.Presence) => void): this;
+    on(event: ClientEvents.PROFILE_UPDATE | 'profileUpdate', listener: (data: GatewayEvents.ProfileUpdate) => void): this;
+    on(event: ClientEvents.SUBSCRIBE | 'subscribe', listener: (data: GatewayEvents.Subscribe) => void): this;
+    on(event: ClientEvents.TOTAL_VIEWING | 'totalViewing', listener: (data: GatewayEvents.TotalViewing) => void): this;
+    on(event: ClientEvents.UNKNOWN | 'unknown', listener: (data: GatewayEvents.Unknown) => void): this;
+    on(event: ClientEvents.UNSUBSCRIBE | 'unsubscribe', listener: (data: GatewayEvents.Unsubscribe) => void): this;
     on(event: string, listener: Function): this;
 }
 

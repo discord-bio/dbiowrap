@@ -18,54 +18,64 @@ interface PingData {
 }
 
 export declare interface Socket {
-  on(event: SocketEvents.CLOSE, listener: (code: number, reason: string) => void): this;
-  on(event: SocketEvents.ERROR, listener: (err: Error) => void): this;
-  on(event: SocketEvents.RAW, listener: (data: [string, any]) => void): this;
-  on(event: SocketEvents.OPEN, listener: () => void): this;
+  on(event: SocketEvents.CLOSE | 'close', listener: (code: number, reason: string) => void): this;
+  on(event: SocketEvents.ERROR | 'error', listener: (err: Error) => void): this;
+  on(event: SocketEvents.RAW | 'raw', listener: (data: [string, any]) => void): this;
+  on(event: SocketEvents.OPEN | 'open', listener: () => void): this;
   on(event: string, listener: Function): this;
 }
 
 export class Socket extends EventEmitter {
     readonly pings: Map<string, PingData> = new Map<string, PingData>()
-    private readonly _manager: SocketManager
+    public manager: SocketManager
     public socket!: WebSocket
     public subscribedTo: string
-    private autoReconnect: boolean
-    private options: SocketOptions
+    public autoReconnect: boolean
+    public options: SocketOptions
+
+    /**
+     * @ignore
+     */
+    private _closeResolve?: Function
 
     constructor (manager: SocketManager, subscribe: string, options: SocketOptions) {
       super();
-      this._manager = manager;
+      this.manager = manager;
       this.subscribedTo = subscribe;
       this.autoReconnect = options.autoReconnect;
       this.options = options;
-
-      this.connect(options.webSocketOptions);
     }
 
-    public close () {
-      this.socket.close(SUCCESS_CLOSE_CODE, 'WebSocket connection closed by client');
-    }
-
-    public connect (options?: ClientOptions) {
-      this.socket = new WebSocket(`wss://${BASE_URL}/?EIO=${CONNECT_ARGS.engineIoVersion}&transport=${CONNECT_ARGS.transport}`, {
-        ...options,
-        perMessageDeflate: false,
-        headers: {
-          Connection: 'upgrade'
-        }
+    public close (): Promise<void> {
+      if (this.socket.CLOSED) throw new Error('Socket is already closed');
+      return new Promise((resolve) => {
+        this.socket.close(SUCCESS_CLOSE_CODE, 'WebSocket connection closed by client');
+        this._closeResolve = resolve;
       });
-      this._initEvents();
+    }
+
+    public connect (): Promise<Socket> {
+      if (this.socket.OPEN) throw new Error('Socket is already open');
+      return new Promise((resolve) => {
+        this.socket = new WebSocket(`wss://${BASE_URL}/?EIO=${CONNECT_ARGS.engineIoVersion}&transport=${CONNECT_ARGS.transport}`, {
+          ...this.options.webSocketOptions,
+          perMessageDeflate: false,
+          headers: {
+            Connection: 'upgrade'
+          }
+        });
+        this._initEvents(resolve);
+      });
     }
 
     /**
      * @ignore
      */
-    private _initEvents () {
+    private _initEvents (openResolve: Function) {
       this.socket.on(SocketEvents.CLOSE, this.onClose.bind(this));
       this.socket.on(SocketEvents.ERROR, this.onError.bind(this));
       this.socket.on(SocketEvents.MESSAGE, this.onMessage.bind(this));
-      this.socket.on(SocketEvents.OPEN, this.onOpen.bind(this));
+      this.socket.on(SocketEvents.OPEN, this.onOpen.bind(this, openResolve));
     }
 
     /**
@@ -112,15 +122,26 @@ export class Socket extends EventEmitter {
       });
     }
 
+    /**
+     * @ignore
+     */
     private onClose (code: number, reason: string) {
+      if (this._closeResolve) this._closeResolve();
       this.emit(SocketEvents.CLOSE, code, reason);
-      if (this.autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect(this.options.webSocketOptions);
+      if (this.autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect();
     }
 
+    /**
+     * @ignore
+     */
     private onError (err: Error) {
-      console.error(err.message);
+      if (this.manager.client.listeners(SocketEvents.ERROR).length > 0) this.emit(SocketEvents.ERROR, Error);
+      throw err; // unhandled error event
     }
 
+    /**
+     * @ignore
+     */
     private onMessage (data: WebSocket.Data) {
       if (typeof data !== 'string') return; // shouldnt happen
       const event = this._parsePacket(data);
@@ -128,8 +149,11 @@ export class Socket extends EventEmitter {
       this.emit(SocketEvents.RAW, event);
     }
 
-    private onOpen () {
+    /**
+     * @ignore
+     */
+    private onOpen (resolve: Function) {
+      resolve(this);
       this.socket.send(`${OUTBOUND_MESSAGE_CODE}["${VIEWING_PROFILE_D}", "${this.subscribedTo}"]`);
-      this.emit(SocketEvents.OPEN);
     }
 }

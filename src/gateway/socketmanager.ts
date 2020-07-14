@@ -1,11 +1,12 @@
 import { Socket } from './socket';
 import { ClientOptions } from 'ws';
 import { Collection } from '../collection';
-import { HEARTBEAT_INTERVAL, KNOWN_PACKETS, SocketEvents } from './constants';
-import { Client, ClientEvents } from '../client';
+import { HEARTBEAT_INTERVAL, GatewayEventNames, SocketEvents, BANNER_URL, BANNER_URL_PARAM } from './constants';
+import { Client } from '../client';
 import { snakeToCamelCase } from '../util';
 import { Profile } from './types';
 import { Details } from '../rest/types';
+import { IUserDetails } from '../structures/userdetails';
 import * as GatewayEvents from './gatewayevents';
 
 export const AUTO_RECONNECT_DEFAULT = true;
@@ -32,23 +33,29 @@ export class SocketManager {
       this._connectionTimeout = options.connectionTimeout || CONNECTION_TIMEOUT_DEFAULT;
       this._webSocketOptions = options.webSocketOptions;
       if (options.subscribe) {
-        options.subscribe.forEach((subscription) => {
-          this._setSocket(subscription);
+        options.subscribe.forEach(async (subscription) => {
+          await this._setSocket(subscription);
         });
       }
       if (this.sockets.size > 0) {
-        this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
+        this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this._heartbeat(), HEARTBEAT_INTERVAL);
       }
     }
 
-    private _clientEmit<T>(socket: Socket, event: string, data: T): void {
+    /**
+     * @ignore
+     */
+    private _clientEmit<T> (socket: Socket, event: string, data: T): void {
       this.client.emit(event, {
         id: socket.subscribedTo,
         ...data
       });
     }
 
-    private async heartbeat (timeout: number = 1000): Promise<void> {
+    /**
+     * @ignore
+     */
+    private async _heartbeat (): Promise<void> {
       for (const key of this.sockets.keys()) {
         const socket = this.sockets.get(key);
         await socket?.ping();
@@ -58,71 +65,69 @@ export class SocketManager {
     /**
      * @ignore
      */
-    private _setSocket (id: string) {
+    private async _setSocket (id: string) {
       const socket = new Socket(this, id, {
         autoReconnect: this._autoReconnect,
         connectionTimeout: this._connectionTimeout,
         webSocketOptions: this._webSocketOptions
       });
       this.sockets.set(id, socket);
+      await socket.connect();
       socket.on(SocketEvents.RAW, (data) => {
         this.onMessage(socket, data);
       });
+      return socket;
     }
 
-    public subscribe (id: string) {
-      this._setSocket(id);
-      if (!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this.heartbeat(), HEARTBEAT_INTERVAL);
+    public async subscribe (id: string) {
+      const socket = await this._setSocket(id);
+      if (!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this._heartbeat(), HEARTBEAT_INTERVAL);
+      return socket;
     }
 
-    public unsubscribe (id: string) {
+    public async unsubscribe (id: string) {
       const socket = this.sockets.get(id);
       if (!socket) throw new Error('No socket is subscribed to this ID');
-      socket.close();
+      await socket.close();
       if (this.sockets.size === 0 && this._heartbeatInterval) clearInterval(this._heartbeatInterval);
     }
 
-    public unsubscribeAll () {
-      this.sockets.map((socket, key) => {
-        socket.close();
+    public async unsubscribeAll () {
+      this.sockets.map(async (socket, key) => {
+        await socket.close();
         this.sockets.delete(key);
       });
       if (this._heartbeatInterval) clearInterval(this._heartbeatInterval);
     }
 
+    /**
+     * @ignore
+     */
     private onMessage (socket: Socket, data: [string, any]) {
       const eventName: string = data[0];
       const eventData: any = data[1];
 
-      if (!KNOWN_PACKETS.includes(eventName)) {
-        return this.client.emit(ClientEvents.UNKNOWN, {
-          event: eventName,
-          data: eventData
-        });
-      }
-
       const emitName = snakeToCamelCase(eventName.toLowerCase());
 
-      switch (emitName) {
-        case 'profileUpdate': {
-
+      switch (eventName) {
+        case GatewayEventNames.PROFILE_UPDATE: {
           // event does not return a discord user, only discord.bio user so discord user must be fetched from cache
 
           const oldProfile = this.client.userProfiles?.get(socket.subscribedTo)?.payload || null;
           const currentProfile: Profile.Profile = eventData;
 
           const newUser: Details.User = {
-              details: new Details.Details(currentProfile.settings),
-              userConnections: currentProfile.userConnections,
-              discordConnections: currentProfile.discordConnections 
-          }
+            details: new Details.Details(currentProfile.settings),
+            userConnections: currentProfile.userConnections,
+            discordConnections: currentProfile.discordConnections
+          };
 
           const newProfile: Details.Payload = {
-              user: newUser,
-              discord: oldProfile?.discord || null
-          }
+            user: newUser,
+            discord: oldProfile?.discord || null
+          };
 
-          this._clientEmit<GatewayEvents.ProfileUpdate>(socket, eventName, {
+          this._clientEmit<GatewayEvents.ProfileUpdate>(socket, emitName, {
             id: socket.subscribedTo,
             newProfile,
             oldProfile
@@ -130,19 +135,52 @@ export class SocketManager {
 
           const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
 
-          if(!cachedProfile) {
+          if (!cachedProfile) {
             this.client.userProfiles?.set(socket.subscribedTo, {
               payload: {
                 user: newUser,
                 discord: null
               }
-            })
+            });
           } else {
             cachedProfile.payload.user = newUser;
           }
 
           break;
         } // case
+
+        case GatewayEventNames.BANNER_UPDATE: {
+          const userHasBanner: boolean = eventData;
+          let bannerUrl: string | null = null;
+
+          if (userHasBanner) bannerUrl = BANNER_URL.replace(BANNER_URL_PARAM, socket.subscribedTo);
+
+          this._clientEmit<GatewayEvents.BannerUpdate>(socket, emitName, {
+            id: socket.subscribedTo,
+            url: bannerUrl
+          });
+
+          const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
+
+          if (cachedProfile) {
+            cachedProfile.payload.user.details.banner = bannerUrl;
+            this.client.userProfiles?.set(socket.subscribedTo, {
+              ...cachedProfile
+            });
+          }
+
+          break;
+        }
+
+        default: {
+          this._clientEmit<GatewayEvents.Unknown>(socket, eventName, {
+            id: socket.subscribedTo,
+            event: eventName,
+            data: eventData
+          });
+
+          break;
+        }
       } // switch
     } // onMessage
 }

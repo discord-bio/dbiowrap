@@ -1,5 +1,5 @@
 # dbiowrap
-A wrapper for the discord.bio REST API.
+A wrapper for the discord.bio REST and WebSocket API.
 
 [Documentation](https://jacherr.github.io/dbiowrap)
 

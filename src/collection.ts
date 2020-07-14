@@ -153,7 +153,7 @@ export class Collection<K, V> {
     }
 
     private stopInterval (): void {
-      this._interval.unref();
+      if (this._interval) this._interval.unref();
     }
 
     public set (key: K, value: V): void {

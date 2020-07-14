@@ -5,6 +5,10 @@ export interface BaseEvent {
     id: string
 }
 
+export interface BannerUpdate extends BaseEvent {
+    url: string | null
+}
+
 export interface Metrics extends BaseEvent {
 
 }

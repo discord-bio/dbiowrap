@@ -8,6 +8,9 @@ export enum SocketEvents {
     RAW = 'raw',
 }
 
+export const BANNER_URL_PARAM = ':uid';
+export const BANNER_URL = `https://s3.eu-west-2.amazonaws.com/discord.bio/banners/${BANNER_URL_PARAM}`;
+
 export const SUCCESS_CLOSE_CODE = 1000;
 
 export const OUTBOUND_MESSAGE_CODE = 42;
@@ -27,13 +30,13 @@ export const CONNECT_ARGS = {
   engineIoVersion: '3'
 };
 
-export const KNOWN_PACKETS = [
-  'PRESENCE',
-  'PROFILE_UPDATE',
-  'TOTAL_VIEWING',
-  'VIEWING',
-  'BANNER_UPDATE',
-  'SUBSCRIBE',
-  'UNSUBSCRIBE',
-  'METRICS'
-];
+export enum GatewayEventNames {
+  PRESENCE = 'PRESENCE',
+  PROFILE_UPDATE = 'PROFILE_UPDATE',
+  TOTAL_VIEWING = 'TOTAL_VIEWING',
+  VIEWING = 'VIEWING',
+  BANNER_UPDATE = 'BANNER_UPDATE',
+  SUBSCRIBE = 'SUBSCRIBE',
+  UNSUBSCRIBE = 'UNSUBSCRIBE',
+  METRICS = 'METRICS'
+};

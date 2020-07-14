@@ -69,7 +69,7 @@ export class RestClient {
             ...res.payload.user,
             details: new Details.Details(res.payload.user.details)
           },
-          discord: new Details.Discord(res.payload.discord)
+          discord: res.payload.discord ? new Details.Discord(res.payload.discord) : null
         }
       }));
 
