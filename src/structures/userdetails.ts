@@ -83,14 +83,14 @@ export class IUserDetails {
     }
 
     get premium () {
-      return (this._flags & 1 << UserDetailsFlags.PREMIUM) !== 0;
+      return (this._flags & UserDetailsFlags.PREMIUM) !== 0;
     }
 
     get staff () {
-      return (this._flags & 1 << UserDetailsFlags.STAFF) !== 0;
+      return (this._flags & UserDetailsFlags.STAFF) !== 0;
     }
 
     get verified () {
-      return (this._flags & 1 << UserDetailsFlags.VERIFIED) !== 0;
+      return (this._flags & UserDetailsFlags.VERIFIED) !== 0;
     }
 }
