@@ -72,10 +72,10 @@ export class Socket extends EventEmitter {
      * @ignore
      */
     private _initEvents (openResolve: Function) {
-      this.socket.on(SocketEvents.CLOSE, this.onClose.bind(this));
-      this.socket.on(SocketEvents.ERROR, this.onError.bind(this));
-      this.socket.on(SocketEvents.MESSAGE, this.onMessage.bind(this));
-      this.socket.on(SocketEvents.OPEN, this.onOpen.bind(this, openResolve));
+      this.socket.on(SocketEvents.CLOSE, this._onClose.bind(this));
+      this.socket.on(SocketEvents.ERROR, this._onError.bind(this));
+      this.socket.on(SocketEvents.MESSAGE, this._onMessage.bind(this));
+      this.socket.on(SocketEvents.OPEN, this._onOpen.bind(this, openResolve));
     }
 
     /**
@@ -125,7 +125,7 @@ export class Socket extends EventEmitter {
     /**
      * @ignore
      */
-    private onClose (code: number, reason: string) {
+    private _onClose (code: number, reason: string) {
       if (this._closeResolve) this._closeResolve();
       this.emit(SocketEvents.CLOSE, code, reason);
       if (this.autoReconnect && code !== SUCCESS_CLOSE_CODE) this.connect();
@@ -134,7 +134,7 @@ export class Socket extends EventEmitter {
     /**
      * @ignore
      */
-    private onError (err: Error) {
+    private _onError (err: Error) {
       if (this.manager.client.listeners(SocketEvents.ERROR).length > 0) this.emit(SocketEvents.ERROR, Error);
       throw err; // unhandled error event
     }
@@ -142,7 +142,7 @@ export class Socket extends EventEmitter {
     /**
      * @ignore
      */
-    private onMessage (data: WebSocket.Data) {
+    private _onMessage (data: WebSocket.Data) {
       if (typeof data !== 'string') return; // shouldnt happen
       const event = this._parsePacket(data);
       if (!event) return; // not a valid packet to emit as a conventional event
@@ -152,7 +152,7 @@ export class Socket extends EventEmitter {
     /**
      * @ignore
      */
-    private onOpen (resolve: Function) {
+    private _onOpen (resolve: Function) {
       resolve(this);
       this.socket.send(`${OUTBOUND_MESSAGE_CODE}["${VIEWING_PROFILE_D}", "${this.subscribedTo}"]`);
     }

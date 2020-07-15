@@ -74,7 +74,7 @@ export class SocketManager {
       this.sockets.set(id, socket);
       await socket.connect();
       socket.on(SocketEvents.RAW, (data) => {
-        this.onMessage(socket, data);
+        this._onMessage(socket, data);
       });
       return socket;
     }
@@ -103,7 +103,7 @@ export class SocketManager {
     /**
      * @ignore
      */
-    private onMessage (socket: Socket, data: [string, any]) {
+    private _onMessage (socket: Socket, data: [string, any]) {
       const eventName: string = data[0];
       const eventData: any = data[1];
 
