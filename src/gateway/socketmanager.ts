@@ -110,6 +110,38 @@ export class SocketManager {
       const emitName = snakeToCamelCase(eventName.toLowerCase());
 
       switch (eventName) {
+        case GatewayEventNames.BANNER_UPDATE: {
+          const userHasBanner: boolean = eventData;
+          let bannerUrl: string | null = null;
+
+          if (userHasBanner) bannerUrl = BANNER_URL.replace(BANNER_URL_PARAM, socket.subscribedTo);
+
+          this._clientEmit<GatewayEvents.BannerUpdate>(socket, emitName, {
+            id: socket.subscribedTo,
+            url: bannerUrl
+          });
+
+          const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
+
+          if (cachedProfile) {
+            cachedProfile.payload.user.details.banner = bannerUrl;
+            this.client.userProfiles?.set(socket.subscribedTo, {
+              ...cachedProfile
+            });
+          }
+
+          break;
+        }
+
+        case GatewayEventNames.PRESENCE: {
+          this._clientEmit<GatewayEvents.Presence>(socket, emitName, {
+            id: socket.subscribedTo,
+            ...eventData
+          });
+
+          break;
+        }
+
         case GatewayEventNames.PROFILE_UPDATE: {
           // event does not return a discord user, only discord.bio user so discord user must be fetched from cache
 
@@ -147,27 +179,13 @@ export class SocketManager {
           }
 
           break;
-        } // case
+        }
 
-        case GatewayEventNames.BANNER_UPDATE: {
-          const userHasBanner: boolean = eventData;
-          let bannerUrl: string | null = null;
-
-          if (userHasBanner) bannerUrl = BANNER_URL.replace(BANNER_URL_PARAM, socket.subscribedTo);
-
-          this._clientEmit<GatewayEvents.BannerUpdate>(socket, emitName, {
+        case GatewayEventNames.TOTAL_VIEWING: {
+          this._clientEmit<GatewayEvents.TotalViewing>(socket, emitName, {
             id: socket.subscribedTo,
-            url: bannerUrl
+            count: eventData
           });
-
-          const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
-
-          if (cachedProfile) {
-            cachedProfile.payload.user.details.banner = bannerUrl;
-            this.client.userProfiles?.set(socket.subscribedTo, {
-              ...cachedProfile
-            });
-          }
 
           break;
         }

@@ -47,5 +47,5 @@ export interface Unsubscribe extends BaseEvent {
 }
 
 export interface TotalViewing extends BaseEvent {
-    data: number
+    count: number
 }

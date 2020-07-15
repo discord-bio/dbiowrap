@@ -15,14 +15,15 @@ export enum ClientEvents {
     SUBSCRIBE = 'subscribe',
     TOTAL_VIEWING = 'totalViewing',
     UNKNOWN = 'unknown',
-    UNSUBSCRIBE = 'unsubscribe',
+    UNSUBSCRIBE = 'unsubscribe'
 }
 
 export interface ClientOptions {
     cache?: boolean | {
-        userProfiles?: boolean | CollectionOptions<string, Details.Payload>,
+        presences?: boolean | CollectionOptions<string, GatewayEvents.Presence>
+        userProfiles?: boolean | CollectionOptions<string, Details.Payload>
     },
-    rest?: boolean | RestClientOptions,
+    rest?: boolean | RestClientOptions
     ws?: boolean | SocketManagerOptions
 }
 
@@ -51,12 +52,17 @@ export class Client extends EventEmitter {
     public rest: RestClient | null;
 
     /**
-     * The socket manager that manages all websockets recieving data from subscribed profiles.
+     * The socket manager that manages all websockets recieving data from subscribed profiles, if enabled.
      */
     public socketManager: SocketManager | null;
 
     /**
-     * The cache of recently fetched user profiles.
+     * The cache of presences recieved from the gateway, if enabled.
+     */
+    public presences: Collection<string, GatewayEvents.Presence> | null
+
+    /**
+     * The cache of recently fetched user profiles, if enabled.
      */
     public userProfiles: Collection<string, Details.Response> | null
 
@@ -78,12 +84,25 @@ export class Client extends EventEmitter {
 
       if (options.cache === false) {
         this.userProfiles = null;
+        this.presences = null;
       } else {
-        let userProfileOptions = {};
-        if (options.cache !== true && typeof options.cache?.userProfiles === 'object') {
-          userProfileOptions = options.cache?.userProfiles;
+        let userProfileOptions: null | {} = {};
+        let presenceOptions: null | {} = {};
+        if (options.cache !== true) {
+          if (typeof options.cache?.presences === 'object') {
+            presenceOptions = options.cache?.presences;
+          } else {
+            presenceOptions = null;
+          }
+
+          if (typeof options.cache?.userProfiles === 'object') {
+            userProfileOptions = options.cache?.userProfiles;
+          } else {
+            userProfileOptions = null;
+          }
         }
-        this.userProfiles = new Collection<string, Details.Response>(userProfileOptions);
+        this.presences = presenceOptions ? new Collection<string, GatewayEvents.Presence>(presenceOptions) : null;
+        this.userProfiles = userProfileOptions ? new Collection<string, Details.Response>(userProfileOptions) : null;
       }
     }
 }

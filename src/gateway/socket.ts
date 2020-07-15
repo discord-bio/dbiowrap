@@ -55,7 +55,7 @@ export class Socket extends EventEmitter {
     }
 
     public connect (): Promise<Socket> {
-      if (this.socket.OPEN) throw new Error('Socket is already open');
+      if (this.socket?.OPEN) throw new Error('Socket is already open');
       return new Promise((resolve) => {
         this.socket = new WebSocket(`wss://${BASE_URL}/?EIO=${CONNECT_ARGS.engineIoVersion}&transport=${CONNECT_ARGS.transport}`, {
           ...this.options.webSocketOptions,
