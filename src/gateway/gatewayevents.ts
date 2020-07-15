@@ -33,17 +33,9 @@ export interface ProfileUpdate extends BaseEvent {
     newProfile: Details.Payload
 }
 
-export interface Subscribe extends BaseEvent {
-
-}
-
 export interface Unknown extends BaseEvent {
     event: string,
     data: any
-}
-
-export interface Unsubscribe extends BaseEvent {
-
 }
 
 export interface TotalViewing extends BaseEvent {

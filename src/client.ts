@@ -35,10 +35,8 @@ export declare interface Client {
     on(event: ClientEvents.METRICS | 'metrics', listener: (data: GatewayEvents.Metrics) => void): this;
     on(event: ClientEvents.PRESENCE | 'presence', listener: (data: GatewayEvents.Presence) => void): this;
     on(event: ClientEvents.PROFILE_UPDATE | 'profileUpdate', listener: (data: GatewayEvents.ProfileUpdate) => void): this;
-    on(event: ClientEvents.SUBSCRIBE | 'subscribe', listener: (data: GatewayEvents.Subscribe) => void): this;
     on(event: ClientEvents.TOTAL_VIEWING | 'totalViewing', listener: (data: GatewayEvents.TotalViewing) => void): this;
     on(event: ClientEvents.UNKNOWN | 'unknown', listener: (data: GatewayEvents.Unknown) => void): this;
-    on(event: ClientEvents.UNSUBSCRIBE | 'unsubscribe', listener: (data: GatewayEvents.Unsubscribe) => void): this;
     on(event: string, listener: Function): this;
 }
 
