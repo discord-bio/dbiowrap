@@ -91,13 +91,13 @@ export class Client extends EventEmitter {
         if (options.cache !== true) {
           if (typeof options.cache?.presences === 'object') {
             presenceOptions = options.cache?.presences;
-          } else {
+          } else if (options.cache?.presences === false) {
             presenceOptions = null;
           }
 
           if (typeof options.cache?.userProfiles === 'object') {
             userProfileOptions = options.cache?.userProfiles;
-          } else {
+          } else if (options.cache?.userProfiles === false) {
             userProfileOptions = null;
           }
         }

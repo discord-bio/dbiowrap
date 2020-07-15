@@ -139,6 +139,8 @@ export class SocketManager {
             ...eventData
           });
 
+          this.client.presences?.set(socket.subscribedTo, eventData);
+
           break;
         }
 
