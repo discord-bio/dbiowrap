@@ -83,10 +83,13 @@ export class RestClient {
     public async fetchTopUsers (): Promise<TopLikes.Response> {
       const path = this.constructPath(Endpoints.TOP_LIKES);
       return this.request<TopLikes.Response>(path).then((res: TopLikes.Response) => ({
-        payload: res.payload.map(x => ({
-          ...x,
-          discord: new TopLikes.DiscordUser(x.discord)
-        }))
+        payload: {
+          ...res.payload,
+          users: res.payload.users.map(x => ({
+            ...x,
+            discord: new TopLikes.DiscordUser(x.discord)
+          }))
+        }
       }));
     }
 

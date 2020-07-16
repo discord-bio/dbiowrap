@@ -3,7 +3,7 @@
 import { SocketManager } from './socketmanager';
 
 import WebSocket, { ClientOptions } from 'ws';
-import { BASE_URL, SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet, CONNECT_ARGS } from './constants';
+import { BASE_URL, SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet, CONNECT_ARGS, PONG_MESSAGE_CODE } from './constants';
 import { EventEmitter } from 'events';
 
 export interface SocketOptions {
@@ -38,6 +38,14 @@ export class Socket extends EventEmitter {
      */
     private _closeResolve?: Function
 
+    /**
+    * @ignore
+    */
+    private _pong?: {
+      start: number,
+      resolve: Function
+    }
+    
     constructor (manager: SocketManager, subscribe: string, options: SocketOptions) {
       super();
       this.manager = manager;
@@ -112,12 +120,18 @@ export class Socket extends EventEmitter {
       return [eventName, eventData];
     }
 
+    /**
+     * Returns the latency of this socket to the discord.bio socket.io server.
+     */
     public ping (): Promise<number> {
-      const start = Date.now();
+      if(this._pong !== undefined) throw new Error('This socket is already pinging');
       return new Promise((resolve, reject) => {
         this.socket.send(OpCodes.PING, (err?: Error) => {
           if (err) reject(err);
-          resolve(Date.now() - start);
+          this._pong = {
+            start: Date.now(),
+            resolve
+          }
         });
       });
     }
@@ -144,6 +158,11 @@ export class Socket extends EventEmitter {
      */
     private _onMessage (data: WebSocket.Data) {
       if (typeof data !== 'string') return; // shouldnt happen
+      if(data === PONG_MESSAGE_CODE && this._pong) {
+        this._pong.resolve(Date.now() - this._pong.start);
+        this._pong = undefined;
+        return;
+      }
       const event = this._parsePacket(data);
       if (!event) return; // not a valid packet to emit as a conventional event
       this.emit(SocketEvents.RAW, event);

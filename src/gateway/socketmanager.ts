@@ -79,6 +79,26 @@ export class SocketManager {
       return socket;
     }
 
+    public async getSocketPings(): Promise<number[] | null> {
+      if(this.sockets.size === 0) return null;
+      return new Promise((resolve) => {
+        const pings: number[] = [];
+        let index = 0;
+        this.sockets.forEach(async (socket) => {
+          const ping = await socket.ping();
+          pings.push(ping);
+          index++;
+          if(index === this.sockets.size) resolve(pings);
+        })
+      })
+    }
+
+    public async pingAvg(): Promise<number | null> {
+      const pings = await this.getSocketPings();
+      if(!pings) return null;
+      return pings?.reduce((a, b) => a + b) / pings?.length
+    }
+
     public async subscribe (id: string) {
       const socket = await this._setSocket(id);
       if (!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this._heartbeat(), HEARTBEAT_INTERVAL);

@@ -103,4 +103,50 @@ export class Client extends EventEmitter {
         this.userProfiles = userProfileOptions ? new Collection<string, Details.Response>(userProfileOptions) : null;
       }
     }
+
+    public async ping(): Promise<{ rest: number | null, gateway: number | null}> {
+      let returnVal: { 
+        rest: number | null, 
+        gateway: number | null
+      } = {
+        rest: null,
+        gateway: null
+      }
+      if(this.rest) {
+        const start = Date.now();
+        await this.rest.fetchTopUsers();
+        returnVal.rest = Date.now() - start;
+      }
+      if(this.socketManager) {
+        const wsPing = await this.socketManager.pingAvg();
+        if(wsPing) returnVal.gateway = Math.round(wsPing);
+      }
+      return returnVal;
+    }
+
+    /**
+     * Subscribes the client to a specified profile by its ID so that events can be recieved for that profile.
+     * @param id The Discord user ID to subscribe to
+     */
+    public subscribe(id: string) {
+      if(!this.socketManager) throw new Error('WebSockets are disabled for this client')
+      return this.socketManager.subscribe(id);
+    }
+
+    /**
+     * Unsubscribes the client from a specified profile by its ID so that events are no lonegr recieved for that profile.
+     * @param id The Discord user ID to unsubscribe from
+     */
+    public unsubscribe(id: string) {
+      if(!this.socketManager) throw new Error('WebSockets are disabled for this client')
+      return this.socketManager.unsubscribe(id);
+    }
+
+    /**
+     * Unsubscribes the client from all profiles it is currently subscribed to.
+     */
+    public unsubscribeAll() {
+      if(!this.socketManager) throw new Error('WebSockets are disabled for this client')
+      return this.socketManager.unsubscribeAll();
+    }
 }

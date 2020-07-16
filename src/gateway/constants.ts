@@ -5,7 +5,7 @@ export enum SocketEvents {
     ERROR = 'error',
     MESSAGE = 'message',
     OPEN = 'open',
-    RAW = 'raw',
+    RAW = 'raw'
 }
 
 export const BANNER_URL_PARAM = ':uid';
@@ -13,7 +13,8 @@ export const BANNER_URL = `https://s3.eu-west-2.amazonaws.com/discord.bio/banner
 
 export const SUCCESS_CLOSE_CODE = 1000;
 
-export const OUTBOUND_MESSAGE_CODE = 42;
+export const OUTBOUND_MESSAGE_CODE = '42';
+export const PONG_MESSAGE_CODE = '3';
 
 export const VIEWING_PROFILE_D = 'VIEWING';
 
