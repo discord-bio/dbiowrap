@@ -1,10 +1,10 @@
 /* global WebSocket */
 
-import { SocketManager } from './socketmanager';
-
 import WebSocket, { ClientOptions } from 'ws';
+
+import { SocketManager } from './socketmanager';
 import { BASE_URL, SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, Packet, CONNECT_ARGS } from './constants';
-import { EventEmitter } from 'events';
+import { getEventEmitter } from '../util';
 
 export interface SocketOptions {
   autoReconnect: boolean
@@ -16,6 +16,8 @@ interface PingData {
   resolve: Function
   reject: Function
 }
+
+const EventEmitter = getEventEmitter();
 
 export declare interface Socket {
   on(event: SocketEvents.CLOSE | 'close', listener: (code: number, reason: string) => void): this;

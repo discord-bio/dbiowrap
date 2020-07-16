@@ -25,6 +25,9 @@
     "@types/node": "^14.0.22",
     "@types/node-fetch": "1.6.9"
   },
+  "optionalDependencies": {
+    "eventemitter3": "^4.0.4"
+  },
   "bugs": {
     "url": "https://github.com/Jacherr/dbiowrap/issues"
   },

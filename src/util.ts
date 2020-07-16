@@ -5,3 +5,13 @@ export function snakeToCamelCase (input: string) {
       .replace('_', '');
   });
 }
+
+export function getEventEmitter () {
+  let emitter;
+  try {
+    emitter = require('eventemitter3');
+  } catch (e) {
+    emitter = require('events').EventEmitter;
+  }
+  return emitter;
+}

@@ -3,8 +3,8 @@ import { SocketManager, SocketManagerOptions } from './gateway/socketmanager';
 
 import { Collection, CollectionOptions } from './collection';
 import { Details } from './rest/types';
-import { EventEmitter } from 'events';
 import * as GatewayEvents from './gateway/gatewayevents';
+import { getEventEmitter } from './util';
 
 export enum ClientEvents {
     BANNER_UPDATE = 'bannerUpdate',
@@ -27,7 +27,9 @@ export interface ClientOptions {
     ws?: boolean | SocketManagerOptions
 }
 
-// have to use string literals for these types
+const EventEmitter = getEventEmitter();
+
+// Have to use string literals for these types
 // because autofill of events doesn't work
 // when only the enum is used :(
 export declare interface Client {
