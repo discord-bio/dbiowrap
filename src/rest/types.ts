@@ -69,6 +69,10 @@ export namespace TopLikes {
     }
 }
 
+export interface Version {
+    version: string
+}
+
 export interface RatelimitHeaders {
     [HeaderNames.RATELIMIT_RESET]: number | null,
     [HeaderNames.RATELIMIT_REMAINING]: number | null,

@@ -114,7 +114,7 @@ export class Client extends EventEmitter {
       }
       if(this.rest) {
         const start = Date.now();
-        await this.rest.fetchTopUsers();
+        await this.rest.fetchVersion();
         returnVal.rest = Date.now() - start;
       }
       if(this.socketManager) {

@@ -1,6 +1,6 @@
 import fetch, { Request, Response as NodeFetchResponse, Headers } from 'node-fetch';
 
-import { RatelimitHeaders, Details, TopLikes } from './types';
+import { RatelimitHeaders, Details, TopLikes, Version } from './types';
 import { DiscordBioError, RatelimitError } from './errors';
 import { BASE_URL, VERSION, Endpoints, PARAM_INDICATOR, PROTOCOL } from './routes';
 import { Bucket } from './bucket';
@@ -91,6 +91,10 @@ export class RestClient {
           }))
         }
       }));
+    }
+
+    public async fetchVersion(): Promise<string> {
+      return this.request<Version>(this.constructPath('')).then(res => res.version);
     }
 
     /**
