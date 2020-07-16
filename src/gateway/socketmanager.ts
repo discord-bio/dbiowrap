@@ -1,12 +1,18 @@
-import { Socket } from './socket';
 import { ClientOptions } from 'ws';
+
+import { Socket } from './socket';
 import { Collection } from '../collection';
-import { HEARTBEAT_INTERVAL, GatewayEventNames, SocketEvents, BANNER_URL, BANNER_URL_PARAM } from './constants';
+import {
+  HEARTBEAT_INTERVAL,
+  GatewayEventNames,
+  SocketEvents,
+  BANNER_URL,
+  BANNER_URL_PARAM
+} from './constants';
 import { Client } from '../client';
 import { snakeToCamelCase } from '../util';
 import { Profile } from './types';
 import { Details } from '../rest/types';
-import { IUserDetails } from '../structures/userdetails';
 import * as GatewayEvents from './gatewayevents';
 
 export const AUTO_RECONNECT_DEFAULT = true;

@@ -1,9 +1,17 @@
-/* global WebSocket */
-
 import WebSocket, { ClientOptions } from 'ws';
 
+import {
+  BASE_URL,
+  SocketEvents,
+  SUCCESS_CLOSE_CODE,
+  OUTBOUND_MESSAGE_CODE,
+  VIEWING_PROFILE_D,
+  OpCodes,
+  PONG_MESSAGE_CODE,
+  CONNECT_ARGS
+} from './constants';
+
 import { SocketManager } from './socketmanager';
-import { BASE_URL, SocketEvents, SUCCESS_CLOSE_CODE, OUTBOUND_MESSAGE_CODE, VIEWING_PROFILE_D, OpCodes, PONG_MESSAGE_CODE, CONNECT_ARGS } from './constants';
 import { getEventEmitter } from '../util';
 
 export interface SocketOptions {
