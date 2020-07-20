@@ -1,7 +1,10 @@
 # dbiowrap
 The official wrapper for the discord.bio REST and WebSocket APIs.
 
-[Documentation](https://dbiowrap.jacher.io/)
+This wrapper is completely modular, with REST, WebSocket and caching features all able to be controlled and enabled/disabled independantly.
+
+If you have any queries please first refer to the [documentation](https://dbiowrap.jacher.io/). <br>
+If your problem cannot be solved there, you can join the official discord.bio [discord server](https://discord.gg/6GYkQTR) and ask there.
 
 ## Install
 `npm i dbiowrap`
