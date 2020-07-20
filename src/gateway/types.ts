@@ -55,7 +55,7 @@ export namespace Profile {
         username: string;
         avatar: string;
         discriminator: string;
-        public_flags: string
+        public_flags: number
     }
 
     export interface DiscordConnection {

@@ -14,6 +14,7 @@ import { snakeToCamelCase } from '../util';
 import { Profile } from './types';
 import { Details } from '../rest/types';
 import * as GatewayEvents from './gatewayevents';
+import { IDiscordUser } from '../structures/discorduser';
 
 export const AUTO_RECONNECT_DEFAULT = true;
 export const CONNECTION_TIMEOUT_DEFAULT = 10000;
@@ -171,7 +172,6 @@ export class SocketManager {
         }
 
         case GatewayEventNames.PROFILE_UPDATE: {
-          // event does not return a discord user, only discord.bio user so discord user must be fetched from cache
 
           const oldProfile = this.client.userProfiles?.get(socket.subscribedTo)?.payload || null;
           const currentProfile: Profile.Profile = eventData;
@@ -184,7 +184,7 @@ export class SocketManager {
 
           const newProfile: Details.Payload = {
             user: newUser,
-            discord: oldProfile?.discord || null
+            discord: new IDiscordUser(currentProfile.discord)
           };
 
           this._clientEmit<GatewayEvents.ProfileUpdate>(socket, emitName, {
