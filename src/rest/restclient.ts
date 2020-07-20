@@ -42,7 +42,7 @@ export class RestClient {
      * Constructs a fully-qualified path from the base URL, version, and endpoint/parameters. This function is internal and should not be used in end-user code.
      */
     private constructPath (endpoint: string, params?: {[key: string]: string}): string {
-      let path = `${BASE_URL}/${endpoint}`;
+      let path = `${BASE_URL}${endpoint}`;
       if (params) {
         Object.keys(params).forEach(param => {
           path = path.replace(`${PARAM_INDICATOR}${param}`, params[param]);
