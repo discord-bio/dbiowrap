@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClientOptions | dbiowrap</title>
+	<title>SocketEvents | dbiowrap</title>
 	<meta name="description" content="Documentation for dbiowrap">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,71 +56,85 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_client_.html">&quot;client&quot;</a>
+					<a href="../modules/_gateway_constants_.html">&quot;gateway/constants&quot;</a>
 				</li>
 				<li>
-					<a href="_client_.clientoptions.html">ClientOptions</a>
+					<a href="_gateway_constants_.socketevents.html">SocketEvents</a>
 				</li>
 			</ul>
-			<h1>Interface ClientOptions</h1>
+			<h1>Enumeration SocketEvents</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">ClientOptions</span>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_client_.clientoptions.html#cache" class="tsd-kind-icon">cache</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_client_.clientoptions.html#rest" class="tsd-kind-icon">rest</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_client_.clientoptions.html#ws" class="tsd-kind-icon">ws</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_gateway_constants_.socketevents.html#close" class="tsd-kind-icon">CLOSE</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_gateway_constants_.socketevents.html#error" class="tsd-kind-icon">ERROR</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_gateway_constants_.socketevents.html#message" class="tsd-kind-icon">MESSAGE</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_gateway_constants_.socketevents.html#open" class="tsd-kind-icon">OPEN</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_gateway_constants_.socketevents.html#raw" class="tsd-kind-icon">RAW</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cache" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cache</h3>
-					<div class="tsd-signature tsd-kind-icon">cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>presences<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="_collection_.collectionoptions.html" class="tsd-signature-type">CollectionOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>userProfiles<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="_collection_.collectionoptions.html" class="tsd-signature-type">CollectionOptions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_rest_types_.details.payload.html" class="tsd-signature-type">Payload</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="close" class="tsd-anchor"></a>
+					<h3>CLOSE</h3>
+					<div class="tsd-signature tsd-kind-icon">CLOSE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;close&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L22">client.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/constants.ts#L4">gateway/constants.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rest" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> rest</h3>
-					<div class="tsd-signature tsd-kind-icon">rest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="_rest_restclient_.restclientoptions.html" class="tsd-signature-type">RestClientOptions</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="error" class="tsd-anchor"></a>
+					<h3>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;error&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L26">client.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/constants.ts#L5">gateway/constants.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ws" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> ws</h3>
-					<div class="tsd-signature tsd-kind-icon">ws<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="_gateway_socketmanager_.socketmanageroptions.html" class="tsd-signature-type">SocketManagerOptions</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="message" class="tsd-anchor"></a>
+					<h3>MESSAGE</h3>
+					<div class="tsd-signature tsd-kind-icon">MESSAGE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;message&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L27">client.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/constants.ts#L6">gateway/constants.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="open" class="tsd-anchor"></a>
+					<h3>OPEN</h3>
+					<div class="tsd-signature tsd-kind-icon">OPEN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;open&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/constants.ts#L7">gateway/constants.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="raw" class="tsd-anchor"></a>
+					<h3>RAW</h3>
+					<div class="tsd-signature tsd-kind-icon">RAW<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;raw&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/constants.ts#L8">gateway/constants.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -132,13 +146,13 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_client_.html">&quot;client&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_collection_.html">&quot;collection&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_gateway_constants_.html">&quot;gateway/constants&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -188,31 +202,64 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/_client_.clientevents.html" class="tsd-kind-icon">Client<wbr>Events</a>
+						<a href="_gateway_constants_.gatewayeventnames.html" class="tsd-kind-icon">Gateway<wbr>Event<wbr>Names</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_client_.client.html" class="tsd-kind-icon">Client</a>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="_gateway_constants_.opcodes.html" class="tsd-kind-icon">Op<wbr>Codes</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_client_.clientoptions.html" class="tsd-kind-icon">Client<wbr>Options</a>
+					<li class="current tsd-kind-enum tsd-parent-kind-module">
+						<a href="_gateway_constants_.socketevents.html" class="tsd-kind-icon">Socket<wbr>Events</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_client_.clientoptions.html#cache" class="tsd-kind-icon">cache</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_gateway_constants_.socketevents.html#close" class="tsd-kind-icon">CLOSE</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_client_.clientoptions.html#rest" class="tsd-kind-icon">rest</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_gateway_constants_.socketevents.html#error" class="tsd-kind-icon">ERROR</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_client_.clientoptions.html#ws" class="tsd-kind-icon">ws</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_gateway_constants_.socketevents.html#message" class="tsd-kind-icon">MESSAGE</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_gateway_constants_.socketevents.html#open" class="tsd-kind-icon">OPEN</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="_gateway_constants_.socketevents.html#raw" class="tsd-kind-icon">RAW</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_client_.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#packet" class="tsd-kind-icon">Packet</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#banner_url" class="tsd-kind-icon">BANNER_<wbr>URL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#banner_url_param" class="tsd-kind-icon">BANNER_<wbr>URL_<wbr>PARAM</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#base_url" class="tsd-kind-icon">BASE_<wbr>URL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#heartbeat_interval" class="tsd-kind-icon">HEARTBEAT_<wbr>INTERVAL</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#outbound_message_code" class="tsd-kind-icon">OUTBOUND_<wbr>MESSAGE_<wbr>CODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#pong_message_code" class="tsd-kind-icon">PONG_<wbr>MESSAGE_<wbr>CODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#success_close_code" class="tsd-kind-icon">SUCCESS_<wbr>CLOSE_<wbr>CODE</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#viewing_profile_d" class="tsd-kind-icon">VIEWING_<wbr>PROFILE_<wbr>D</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-module">
+						<a href="../modules/_gateway_constants_.html#connect_args" class="tsd-kind-icon">CONNECT_<wbr>ARGS</a>
 					</li>
 				</ul>
 			</nav>
@@ -233,7 +280,6 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>

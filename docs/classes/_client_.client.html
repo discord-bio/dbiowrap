@@ -72,7 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The main REST client for interfacing with discord.bio.</p>
+						<p>The base client that should be instantiated when this wrapper is used.</p>
 					</div>
 				</div>
 			</section>
@@ -80,7 +80,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Client</span>
+						<span class="tsd-signature-type">any</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Client</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -97,24 +102,20 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_client_.client.html#bucket" class="tsd-kind-icon">bucket</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_client_.client.html#presences" class="tsd-kind-icon">presences</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_client_.client.html#rest" class="tsd-kind-icon">rest</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_client_.client.html#socketmanager" class="tsd-kind-icon">socket<wbr>Manager</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_client_.client.html#userprofiles" class="tsd-kind-icon">user<wbr>Profiles</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_client_.client.html#constructpath" class="tsd-kind-icon">construct<wbr>Path</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#fetchtopusers" class="tsd-kind-icon">fetch<wbr>Top<wbr>Users</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#fetchuserdetails" class="tsd-kind-icon">fetch<wbr>User<wbr>Details</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#request" class="tsd-kind-icon">request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="_client_.client.html#updateratelimitheaders" class="tsd-kind-icon">update<wbr>Ratelimit<wbr>Headers</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Object literals</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-object-literal tsd-parent-kind-class"><a href="_client_.client.html#ratelimitheaders" class="tsd-kind-icon">ratelimit<wbr>Headers</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#ping" class="tsd-kind-icon">ping</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_client_.client.html#unsubscribeall" class="tsd-kind-icon">unsubscribe<wbr>All</a></li>
 							</ul>
 						</section>
 					</div>
@@ -132,7 +133,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L37">client.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L67">client.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -149,228 +150,410 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="bucket" class="tsd-anchor"></a>
-					<h3>bucket</h3>
-					<div class="tsd-signature tsd-kind-icon">bucket<span class="tsd-signature-symbol">:</span> <a href="_bucket_.bucket.html" class="tsd-signature-type">Bucket</a><span class="tsd-signature-symbol"> = new Bucket()</span></div>
+					<a name="presences" class="tsd-anchor"></a>
+					<h3>presences</h3>
+					<div class="tsd-signature tsd-kind-icon">presences<span class="tsd-signature-symbol">:</span> <a href="_collection_.collection.html" class="tsd-signature-type">Collection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L23">client.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L62">client.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The ratelimit bucket that helps prevent ratelimits. Not implemented yet</p>
+							<p>The cache of presences recieved from the gateway, if enabled.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="rest" class="tsd-anchor"></a>
+					<h3>rest</h3>
+					<div class="tsd-signature tsd-kind-icon">rest<span class="tsd-signature-symbol">:</span> <a href="_rest_restclient_.restclient.html" class="tsd-signature-type">RestClient</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L52">client.ts:52</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The rest client responsible for handling REST requests.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="socketmanager" class="tsd-anchor"></a>
+					<h3>socket<wbr>Manager</h3>
+					<div class="tsd-signature tsd-kind-icon">socket<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="_gateway_socketmanager_.socketmanager.html" class="tsd-signature-type">SocketManager</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L57">client.ts:57</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The socket manager that manages all websockets recieving data from subscribed profiles, if enabled.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="userprofiles" class="tsd-anchor"></a>
 					<h3>user<wbr>Profiles</h3>
-					<div class="tsd-signature tsd-kind-icon">user<wbr>Profiles<span class="tsd-signature-symbol">:</span> <a href="_collection_.collection.html" class="tsd-signature-type">Collection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_types_.details.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<div class="tsd-signature tsd-kind-icon">user<wbr>Profiles<span class="tsd-signature-symbol">:</span> <a href="_collection_.collection.html" class="tsd-signature-type">Collection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/_rest_types_.details.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L37">client.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L67">client.ts:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The cache of recently fetched user profiles.</p>
+							<p>The cache of recently fetched user profiles, if enabled.</p>
 						</div>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="constructpath" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> construct<wbr>Path</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">construct<wbr>Path<span class="tsd-signature-symbol">(</span>endpoint<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, params<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="on" class="tsd-anchor"></a>
+					<h3>on</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#banner_update" class="tsd-signature-type">BANNER_UPDATE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bannerUpdate"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.bannerupdate.html" class="tsd-signature-type">BannerUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#metrics" class="tsd-signature-type">METRICS</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"metrics"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#presence" class="tsd-signature-type">PRESENCE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"presence"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#profile_update" class="tsd-signature-type">PROFILE_UPDATE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"profileUpdate"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.profileupdate.html" class="tsd-signature-type">ProfileUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#total_viewing" class="tsd-signature-type">TOTAL_VIEWING</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"totalViewing"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.totalviewing.html" class="tsd-signature-type">TotalViewing</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../enums/_client_.clientevents.html#unknown" class="tsd-signature-type">UNKNOWN</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"unknown"</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.unknown.html" class="tsd-signature-type">Unknown</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L54">client.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L36">client.ts:36</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Constructs a fully-qualified path from the base URL, version, and endpoint/parameters. This function is internal and should not be used in end-user code.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>endpoint: <span class="tsd-signature-type">string</span></h5>
+									<h5>event: <a href="../enums/_client_.clientevents.html#banner_update" class="tsd-signature-type">BANNER_UPDATE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bannerUpdate"</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> params: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span></h5>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.bannerupdate.html" class="tsd-signature-type">BannerUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.bannerupdate.html" class="tsd-signature-type">BannerUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.bannerupdate.html" class="tsd-signature-type">BannerUpdate</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L37">client.ts:37</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../enums/_client_.clientevents.html#metrics" class="tsd-signature-type">METRICS</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"metrics"</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.metrics.html" class="tsd-signature-type">Metrics</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.metrics.html" class="tsd-signature-type">Metrics</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L38">client.ts:38</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../enums/_client_.clientevents.html#presence" class="tsd-signature-type">PRESENCE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"presence"</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.presence.html" class="tsd-signature-type">Presence</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L39">client.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../enums/_client_.clientevents.html#profile_update" class="tsd-signature-type">PROFILE_UPDATE</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"profileUpdate"</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.profileupdate.html" class="tsd-signature-type">ProfileUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.profileupdate.html" class="tsd-signature-type">ProfileUpdate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.profileupdate.html" class="tsd-signature-type">ProfileUpdate</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L40">client.ts:40</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../enums/_client_.clientevents.html#total_viewing" class="tsd-signature-type">TOTAL_VIEWING</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"totalViewing"</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.totalviewing.html" class="tsd-signature-type">TotalViewing</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.totalviewing.html" class="tsd-signature-type">TotalViewing</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.totalviewing.html" class="tsd-signature-type">TotalViewing</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L41">client.ts:41</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <a href="../enums/_client_.clientevents.html#unknown" class="tsd-signature-type">UNKNOWN</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"unknown"</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.unknown.html" class="tsd-signature-type">Unknown</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="../interfaces/_gateway_gatewayevents_.unknown.html" class="tsd-signature-type">Unknown</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>data: <a href="../interfaces/_gateway_gatewayevents_.unknown.html" class="tsd-signature-type">Unknown</a></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L42">client.ts:42</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>listener: <span class="tsd-signature-type">Function</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="fetchtopusers" class="tsd-anchor"></a>
-					<h3>fetch<wbr>Top<wbr>Users</h3>
+					<a name="ping" class="tsd-anchor"></a>
+					<h3>ping</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fetch<wbr>Top<wbr>Users<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.toplikes.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">ping<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>gateway<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>rest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L89">client.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L109">client.ts:109</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Fetches the top liked users on discord.bio.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.toplikes.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>gateway<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>rest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="fetchuserdetails" class="tsd-anchor"></a>
-					<h3>fetch<wbr>User<wbr>Details</h3>
+					<a name="subscribe" class="tsd-anchor"></a>
+					<h3>subscribe</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fetch<wbr>User<wbr>Details<span class="tsd-signature-symbol">(</span>searchQuery<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.details.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_gateway_socket_.socket.html" class="tsd-signature-type">Socket</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L68">client.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L133">client.ts:133</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Fetches a user from discord.bio.</p>
+									<p>Subscribes the client to a specified profile by its ID so that events can be recieved for that profile.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>searchQuery: <span class="tsd-signature-type">string</span></h5>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The user ID or slug to search for</p>
+										<p>The Discord user ID to subscribe to</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.details.response.html" class="tsd-signature-type">Response</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="_gateway_socket_.socket.html" class="tsd-signature-type">Socket</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="request" class="tsd-anchor"></a>
-					<h3>request</h3>
+					<a name="unsubscribe" class="tsd-anchor"></a>
+					<h3>unsubscribe</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">unsubscribe<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L103">client.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L142">client.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sends a request to a specified path and return the response as json. Mostly for internal use. This function updates the stored ratelimit headers.</p>
+									<p>Unsubscribes the client from a specified profile by its ID so that events are no lonegr recieved for that profile.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>path: <span class="tsd-signature-type">string</span></h5>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The path to send the request to</p>
+										<p>The Discord user ID to unsubscribe from</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="updateratelimitheaders" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>Ratelimit<wbr>Headers</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Ratelimit<wbr>Headers<span class="tsd-signature-symbol">(</span>headers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Headers</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="unsubscribeall" class="tsd-anchor"></a>
+					<h3>unsubscribe<wbr>All</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">unsubscribe<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L126">client.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/client.ts#L150">client.ts:150</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Updates the stored ratelimit headers. This function is internal and should not be used in end-user code.</p>
+									<p>Unsubscribes the client from all profiles it is currently subscribed to.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>headers: <span class="tsd-signature-type">Headers</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Object literals</h2>
-				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class">
-					<a name="ratelimitheaders" class="tsd-anchor"></a>
-					<h3>ratelimit<wbr>Headers</h3>
-					<div class="tsd-signature tsd-kind-icon">ratelimit<wbr>Headers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L28">client.ts:28</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The most recently recieved ratelimit headers, if any.</p>
-						</div>
-					</div>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="ratelimitheaders._headernames_ratelimit_limit_" class="tsd-anchor"></a>
-						<h3>[<wbr>Header<wbr>Names.RATELIMIT_<wbr>LIMIT]</h3>
-						<div class="tsd-signature tsd-kind-icon">[<wbr>Header<wbr>Names.RATELIMIT_<wbr>LIMIT]<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L31">client.ts:31</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="ratelimitheaders._headernames_ratelimit_remaining_" class="tsd-anchor"></a>
-						<h3>[<wbr>Header<wbr>Names.RATELIMIT_<wbr>REMAINING]</h3>
-						<div class="tsd-signature tsd-kind-icon">[<wbr>Header<wbr>Names.RATELIMIT_<wbr>REMAINING]<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L30">client.ts:30</a></li>
-							</ul>
-						</aside>
-					</section>
-					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="ratelimitheaders._headernames_ratelimit_reset_" class="tsd-anchor"></a>
-						<h3>[<wbr>Header<wbr>Names.RATELIMIT_<wbr>RESET]</h3>
-						<div class="tsd-signature tsd-kind-icon">[<wbr>Header<wbr>Names.RATELIMIT_<wbr>RESET]<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> = null</span></div>
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/8c2e969/src/client.ts#L29">client.ts:29</a></li>
-							</ul>
-						</aside>
-					</section>
 				</section>
 			</section>
 		</div>
@@ -380,9 +563,6 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_bucket_.html">&quot;bucket&quot;</a>
-					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/_client_.html">&quot;client&quot;</a>
 					</li>
@@ -390,21 +570,57 @@
 						<a href="../modules/_collection_.html">&quot;collection&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_constants_.html">&quot;constants&quot;</a>
+						<a href="../modules/_gateway_constants_.html">&quot;gateway/constants&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_errors_.html">&quot;errors&quot;</a>
+						<a href="../modules/_gateway_gatewayevents_.html">&quot;gateway/gatewayevents&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_routes_.html">&quot;routes&quot;</a>
+						<a href="../modules/_gateway_socket_.html">&quot;gateway/socket&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_types_.html">&quot;types&quot;</a>
+						<a href="../modules/_gateway_socketmanager_.html">&quot;gateway/socketmanager&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_gateway_types_.html">&quot;gateway/types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_index_.html">&quot;index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_bucket_.html">&quot;rest/bucket&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_constants_.html">&quot;rest/constants&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_errors_.html">&quot;rest/errors&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_restclient_.html">&quot;rest/restclient&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_routes_.html">&quot;rest/routes&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_rest_types_.html">&quot;rest/types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_structures_discorduser_.html">&quot;structures/discorduser&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_structures_userdetails_.html">&quot;structures/userdetails&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_util_.html">&quot;util&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_client_.clientevents.html" class="tsd-kind-icon">Client<wbr>Events</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
@@ -414,28 +630,31 @@
 								<a href="_client_.client.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_client_.client.html#bucket" class="tsd-kind-icon">bucket</a>
+								<a href="_client_.client.html#presences" class="tsd-kind-icon">presences</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_client_.client.html#rest" class="tsd-kind-icon">rest</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_client_.client.html#socketmanager" class="tsd-kind-icon">socket<wbr>Manager</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_client_.client.html#userprofiles" class="tsd-kind-icon">user<wbr>Profiles</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_client_.client.html#constructpath" class="tsd-kind-icon">construct<wbr>Path</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_client_.client.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_client_.client.html#fetchtopusers" class="tsd-kind-icon">fetch<wbr>Top<wbr>Users</a>
+								<a href="_client_.client.html#ping" class="tsd-kind-icon">ping</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_client_.client.html#fetchuserdetails" class="tsd-kind-icon">fetch<wbr>User<wbr>Details</a>
+								<a href="_client_.client.html#subscribe" class="tsd-kind-icon">subscribe</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_client_.client.html#request" class="tsd-kind-icon">request</a>
+								<a href="_client_.client.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="_client_.client.html#updateratelimitheaders" class="tsd-kind-icon">update<wbr>Ratelimit<wbr>Headers</a>
-							</li>
-							<li class=" tsd-kind-object-literal tsd-parent-kind-class">
-								<a href="_client_.client.html#ratelimitheaders" class="tsd-kind-icon">ratelimit<wbr>Headers</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_client_.client.html#unsubscribeall" class="tsd-kind-icon">unsubscribe<wbr>All</a>
 							</li>
 						</ul>
 					</li>
@@ -443,6 +662,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/_client_.clientoptions.html" class="tsd-kind-icon">Client<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_client_.html#eventemitter" class="tsd-kind-icon">Event<wbr>Emitter</a>
 					</li>
 				</ul>
 			</nav>
@@ -454,6 +676,13 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
@@ -461,18 +690,11 @@
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-			</ul>
-			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
 		</div>
 	</div>

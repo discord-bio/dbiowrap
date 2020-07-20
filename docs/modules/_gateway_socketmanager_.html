@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;collection&quot; | dbiowrap</title>
+	<title>&quot;gateway/socketmanager&quot; | dbiowrap</title>
 	<meta name="description" content="Documentation for dbiowrap">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_collection_.html">&quot;collection&quot;</a>
+					<a href="_gateway_socketmanager_.html">&quot;gateway/socketmanager&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;collection&quot;</h1>
+			<h1>Module &quot;gateway/socketmanager&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -73,17 +73,46 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/_collection_.collection.html" class="tsd-kind-icon">Collection</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_gateway_socketmanager_.socketmanager.html" class="tsd-kind-icon">Socket<wbr>Manager</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/_collection_.collectionoptions.html" class="tsd-kind-icon">Collection<wbr>Options</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_collection_.intervaloptions.html" class="tsd-kind-icon">Interval<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_gateway_socketmanager_.socketmanageroptions.html" class="tsd-kind-icon">Socket<wbr>Manager<wbr>Options</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Variables</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_gateway_socketmanager_.html#auto_reconnect_default" class="tsd-kind-icon">AUTO_<wbr>RECONNECT_<wbr>DEFAULT</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_gateway_socketmanager_.html#connection_timeout_default" class="tsd-kind-icon">CONNECTION_<wbr>TIMEOUT_<wbr>DEFAULT</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="auto_reconnect_default" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> AUTO_<wbr>RECONNECT_<wbr>DEFAULT</h3>
+					<div class="tsd-signature tsd-kind-icon">AUTO_<wbr>RECONNECT_<wbr>DEFAULT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> = true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/socketmanager.ts#L18">gateway/socketmanager.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="connection_timeout_default" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> CONNECTION_<wbr>TIMEOUT_<wbr>DEFAULT</h3>
+					<div class="tsd-signature tsd-kind-icon">CONNECTION_<wbr>TIMEOUT_<wbr>DEFAULT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">10000</span><span class="tsd-signature-symbol"> = 10000</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Jacherr/dbiowrap/blob/adf8b5f/src/gateway/socketmanager.ts#L19">gateway/socketmanager.ts:19</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -96,7 +125,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_client_.html">&quot;client&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_collection_.html">&quot;collection&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -108,7 +137,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_gateway_socket_.html">&quot;gateway/socket&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_gateway_socketmanager_.html">&quot;gateway/socketmanager&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -148,14 +177,17 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/_collection_.collection.html" class="tsd-kind-icon">Collection</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../interfaces/_collection_.collectionoptions.html" class="tsd-kind-icon">Collection<wbr>Options</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="../classes/_gateway_socketmanager_.socketmanager.html" class="tsd-kind-icon">Socket<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/_collection_.intervaloptions.html" class="tsd-kind-icon">Interval<wbr>Options</a>
+						<a href="../interfaces/_gateway_socketmanager_.socketmanageroptions.html" class="tsd-kind-icon">Socket<wbr>Manager<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_gateway_socketmanager_.html#auto_reconnect_default" class="tsd-kind-icon">AUTO_<wbr>RECONNECT_<wbr>DEFAULT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_gateway_socketmanager_.html#connection_timeout_default" class="tsd-kind-icon">CONNECTION_<wbr>TIMEOUT_<wbr>DEFAULT</a>
 					</li>
 				</ul>
 			</nav>
