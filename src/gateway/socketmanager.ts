@@ -177,9 +177,9 @@ export class SocketManager {
           const currentProfile: Profile.Profile = eventData;
 
           const newUser: Details.User = {
-            details: new Details.Details(currentProfile.settings),
-            userConnections: currentProfile.userConnections,
-            discordConnections: currentProfile.discordConnections
+            details: new Details.Details(currentProfile.user.details),
+            userConnections: currentProfile.user.userConnections,
+            discordConnections: currentProfile.user.discordConnections
           };
 
           const newProfile: Details.Payload = {

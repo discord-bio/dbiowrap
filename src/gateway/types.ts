@@ -32,7 +32,12 @@ export namespace Activity {
 
 export namespace Profile {
     export interface Profile {
-        settings: Settings;
+        user: User,
+        discord: Discord
+    }
+
+    export interface User {
+        details: Details
         discordConnections: DiscordConnection[]
         userConnections: UserConnections;
     }
@@ -45,6 +50,14 @@ export namespace Profile {
         linkedin: string | null;
     }
 
+    export interface Discord {
+        id: string;
+        username: string;
+        avatar: string;
+        discriminator: string;
+        public_flags: string
+    }
+
     export interface DiscordConnection {
         connection_type: string;
         name: string;
@@ -52,7 +65,7 @@ export namespace Profile {
         icon: string;
     }
 
-    export interface Settings {
+    export interface Details {
         slug: string;
         user_id: string;
         flags: number;
