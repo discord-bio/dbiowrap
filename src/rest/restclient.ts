@@ -2,7 +2,7 @@ import fetch, { Request, Response as NodeFetchResponse, Headers } from 'node-fet
 
 import { RatelimitHeaders, Details, TopLikes, Version } from './types';
 import { DiscordBioError, RatelimitError } from './errors';
-import { BASE_URL, VERSION, Endpoints, PARAM_INDICATOR, PROTOCOL } from './routes';
+import { BASE_URL, Endpoints, PARAM_INDICATOR, PROTOCOL } from './routes';
 import { Bucket } from './bucket';
 import { StatusCodes, HeaderNames } from './constants';
 import { Client } from '../client';
@@ -42,7 +42,7 @@ export class RestClient {
      * Constructs a fully-qualified path from the base URL, version, and endpoint/parameters. This function is internal and should not be used in end-user code.
      */
     private constructPath (endpoint: string, params?: {[key: string]: string}): string {
-      let path = `${BASE_URL}/${VERSION}${endpoint}`;
+      let path = `${BASE_URL}/${endpoint}`;
       if (params) {
         Object.keys(params).forEach(param => {
           path = path.replace(`${PARAM_INDICATOR}${param}`, params[param]);
@@ -93,7 +93,7 @@ export class RestClient {
       }));
     }
 
-    public async fetchVersion(): Promise<string> {
+    public async fetchVersion (): Promise<string> {
       return this.request<Version>(this.constructPath('')).then(res => res.version);
     }
 
