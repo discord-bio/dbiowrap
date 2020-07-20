@@ -6,10 +6,6 @@
   "directories": {
     "lib": "lib"
   },
-  "scripts": {
-    "test_rest": "tsc ; cd lib/examples ; node userDetails.ts",
-    "test_ws": "tsc ; cd lib/examples ; node webSocketDefaults.ts"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/discord-bio/dbiowrap.git"
