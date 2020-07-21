@@ -5,6 +5,7 @@ import { Collection, CollectionOptions } from './collection';
 import { Details } from './rest/types';
 import * as GatewayEvents from './gateway/gatewayevents';
 import { getEventEmitter } from './util';
+import { SubscribeOptions } from './gateway/types';
 
 export enum ClientEvents {
     BANNER_UPDATE = 'bannerUpdate',
@@ -130,9 +131,9 @@ export class Client extends EventEmitter {
      * Subscribes the client to a specified profile by its ID so that events can be recieved for that profile.
      * @param id The Discord user ID to subscribe to
      */
-    public subscribe (id: string) {
+    public subscribe (id: string, options: SubscribeOptions = {}) {
       if (!this.socketManager) throw new Error('WebSockets are disabled for this client');
-      return this.socketManager.subscribe(id);
+      return this.socketManager.subscribe(id, options);
     }
 
     /**

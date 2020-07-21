@@ -13,11 +13,13 @@ import {
 
 import { SocketManager } from './socketmanager';
 import { getEventEmitter } from '../util';
+import { WebhookOptions } from './types';
 
 export interface SocketOptions {
-  autoReconnect: boolean
-  connectionTimeout: number
-  webSocketOptions?: ClientOptions
+  autoReconnect: boolean;
+  connectionTimeout: number;
+  webHookOptions?: WebhookOptions
+  webSocketOptions?: ClientOptions;
 }
 
 interface PingData {
@@ -42,6 +44,7 @@ export class Socket extends EventEmitter {
     public subscribedTo: string
     public autoReconnect: boolean
     public options: SocketOptions
+    public webHookOptions?: WebhookOptions
 
     /**
      * @ignore
@@ -62,6 +65,11 @@ export class Socket extends EventEmitter {
       this.subscribedTo = subscribe;
       this.autoReconnect = options.autoReconnect;
       this.options = options;
+      this.webHookOptions = options.webHookOptions;
+    }
+
+    get client () {
+      return this.manager.client;
     }
 
     public close (): Promise<void> {

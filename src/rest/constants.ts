@@ -11,5 +11,11 @@ export enum StatusCodes {
 export enum HeaderNames {
     RATELIMIT_RESET = 'x-ratelimit-reset',
     RATELIMIT_REMAINING = 'x-ratelimit-remaining',
-    RATELIMIT_LIMIT = 'x-ratelimit-limit'
+    RATELIMIT_LIMIT = 'x-ratelimit-limit',
+    CONTENT_TYPE = 'content-type'
+}
+
+export enum HttpRequestTypes {
+    POST = 'POST',
+    GET = 'GET'
 }

@@ -1,11 +1,14 @@
 import fetch, { Request, Response as NodeFetchResponse, Headers } from 'node-fetch';
+import { arch, platform } from 'os';
 
-import { RatelimitHeaders, Details, TopLikes, Version } from './types';
+import { RatelimitHeaders, Details, TopLikes, Version, WebhookOptions } from './types';
 import { DiscordBioError, RatelimitError } from './errors';
-import { BASE_URL, Endpoints, PARAM_INDICATOR, PROTOCOL } from './routes';
+import { BASE_URL, Endpoints, PARAM_INDICATOR, PROTOCOL, DISCORD_BASE_URL, DiscordEndpoints, Params } from './routes';
 import { Bucket } from './bucket';
-import { StatusCodes, HeaderNames } from './constants';
+import { StatusCodes, HeaderNames, HttpRequestTypes } from './constants';
 import { Client } from '../client';
+import { version } from '../../package.json';
+import { head } from 'superagent';
 
 export interface RestClientOptions {
 
@@ -26,6 +29,11 @@ export class RestClient {
     public client: Client
 
     /**
+     * The content-type to use when executing any Discord webhooks.
+     */
+    readonly contentType = `dbiowrap ${version} (${platform()} ${arch()})`
+
+    /**
      * The most recently recieved ratelimit headers, if any.
      */
     public ratelimitHeaders: RatelimitHeaders = {
@@ -39,7 +47,7 @@ export class RestClient {
     }
 
     /**
-     * Constructs a fully-qualified path from the base URL, version, and endpoint/parameters. This function is internal and should not be used in end-user code.
+     * @ignore
      */
     private constructPath (endpoint: string, params?: {[key: string]: string}): string {
       let path = `${BASE_URL}${endpoint}`;
@@ -49,6 +57,22 @@ export class RestClient {
         });
       }
       return `${PROTOCOL}${path}`;
+    }
+
+    /**
+     * Executes a Discord webhook.
+     * @param id the webhook ID to use
+     * @param token the webhook token to use
+     * @param option the webhook options
+     */
+    public executeWebhook (id: string, token: string, options: WebhookOptions) {
+      return fetch(`${PROTOCOL}${DISCORD_BASE_URL}${DiscordEndpoints.EXECUTE_WEBHOOK.replace(Params.WEBHOOK.id, id).replace(Params.WEBHOOK.token, token)}`, {
+        headers: {
+          [HeaderNames.CONTENT_TYPE]: this.contentType
+        },
+        method: HttpRequestTypes.POST,
+        body: JSON.stringify(options)
+      }).then(res => res.json());
     }
 
     /**
@@ -120,13 +144,14 @@ export class RestClient {
     }
 
     /**
-     * Updates the stored ratelimit headers. This function is internal and should not be used in end-user code.
+     * @ignore
      */
     private updateRatelimitHeaders (headers: Headers) {
       const ratelimitHeaders = [HeaderNames.RATELIMIT_RESET, HeaderNames.RATELIMIT_REMAINING, HeaderNames.RATELIMIT_RESET];
       for (const headerName of ratelimitHeaders) {
         const headerValue = headers.get(headerName);
-        if (headerValue) this.ratelimitHeaders[headerName] = parseInt(headerValue);
+        // @ts-ignore
+        if (headerValue && (headerName in this.ratelimitHeaders)) this.ratelimitHeaders[headerName] = parseInt(headerValue);
       }
     }
 }

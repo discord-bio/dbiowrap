@@ -11,7 +11,7 @@ import {
 } from './constants';
 import { Client } from '../client';
 import { snakeToCamelCase } from '../util';
-import { Profile } from './types';
+import { Profile, SubscribeOptions } from './types';
 import { Details } from '../rest/types';
 import * as GatewayEvents from './gatewayevents';
 
@@ -71,11 +71,12 @@ export class SocketManager {
     /**
      * @ignore
      */
-    private async _setSocket (id: string) {
+    private async _setSocket (id: string, options: SubscribeOptions = {}) {
       const socket = new Socket(this, id, {
         autoReconnect: this._autoReconnect,
         connectionTimeout: this._connectionTimeout,
-        webSocketOptions: this._webSocketOptions
+        webSocketOptions: this._webSocketOptions,
+        webHookOptions: options.webhook
       });
       this.sockets.set(id, socket);
       await socket.connect();
@@ -105,8 +106,8 @@ export class SocketManager {
       return pings?.reduce((a, b) => a + b) / pings?.length;
     }
 
-    public async subscribe (id: string) {
-      const socket = await this._setSocket(id);
+    public async subscribe (id: string, options: SubscribeOptions = {}) {
+      const socket = await this._setSocket(id, options);
       if (!this._heartbeatInterval) this._heartbeatInterval = <NodeJS.Timer> <unknown> setInterval(() => this._heartbeat(), HEARTBEAT_INTERVAL);
       return socket;
     }
@@ -192,6 +193,14 @@ export class SocketManager {
             newProfile,
             oldProfile
           });
+
+          if (socket.webHookOptions) {
+            this.client.rest?.executeWebhook(socket.webHookOptions.id, socket.webHookOptions.token, {
+              content: 'test',
+              username: 'ferris',
+              avatar_url: 'https://cdn.discordapp.com/avatars/708680386980479036/797bcff8a356d210123bc606801ab4db.png'
+            });
+          }
 
           const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
 

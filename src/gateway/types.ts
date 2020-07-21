@@ -84,3 +84,12 @@ export namespace Profile {
         likes: number;
     }
 }
+
+export interface SubscribeOptions {
+    webhook?: WebhookOptions
+}
+
+export interface WebhookOptions {
+    token: string;
+    id: string;
+}
