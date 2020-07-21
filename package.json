@@ -6,12 +6,9 @@
   "directories": {
     "lib": "lib"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jacherr/dbiowrap.git"
+    "url": "git+https://github.com/discord-bio/dbiowrap.git"
   },
   "author": "Jacherr",
   "license": "MIT",
@@ -28,7 +25,7 @@
     "eventemitter3": "^4.0.4"
   },
   "bugs": {
-    "url": "https://github.com/Jacherr/dbiowrap/issues"
+    "url": "https://github.com/discord-bio/dbiowrap/issues"
   },
-  "homepage": "https://github.com/Jacherr/dbiowrap#readme"
+  "homepage": "https://github.com/discord-bio/dbiowrap#readme"
 }

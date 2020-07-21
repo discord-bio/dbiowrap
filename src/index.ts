@@ -13,17 +13,17 @@ import * as GatewayEvents from './gateway/gatewayevents';
 import * as Client from './client';
 
 export {
-  RestClient,
-  Errors,
-  Routes,
-  Types,
-  Collection,
-  RestConstants,
   Bucket,
-  User,
-  Socket,
-  SocketManager,
+  Client,
+  Collection,
+  Errors,
   GatewayConstants,
   GatewayEvents,
-  Client
+  RestClient,
+  RestConstants,
+  Routes,
+  Socket,
+  SocketManager,
+  Types,
+  User
 };

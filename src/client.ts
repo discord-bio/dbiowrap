@@ -12,11 +12,8 @@ export enum ClientEvents {
     METRICS = 'metrics',
     PRESENCE = 'presence',
     PROFILE_UPDATE = 'profileUpdate',
-    READY = 'ready',
-    SUBSCRIBE = 'subscribe',
     TOTAL_VIEWING = 'totalViewing',
     UNKNOWN = 'unknown',
-    UNSUBSCRIBE = 'unsubscribe'
 }
 
 export interface ClientOptions {
@@ -48,7 +45,7 @@ export declare interface Client {
  */
 export class Client extends EventEmitter {
     /**
-     * The rest client responsible for handling REST requests.
+     * The rest client responsible for handling REST requests, if enabled.
      */
     public rest: RestClient | null;
 
@@ -107,6 +104,10 @@ export class Client extends EventEmitter {
       }
     }
 
+    /**
+     * Pings the Websocket (if enabled) and REST (if enabled) APIs. Returns null if disabled.
+     * For WebSocket, if multiple sockets are connected, the average ping of each socket is used.
+     */
     public async ping (): Promise<{ rest: number | null, gateway: number | null}> {
       const returnVal: {
         rest: number | null,
@@ -128,7 +129,7 @@ export class Client extends EventEmitter {
     }
 
     /**
-     * Subscribes the client to a specified profile by its ID so that events can be recieved for that profile.
+     * Subscribes the client to a specified profile by its ID (if websockets are enabled) so that events can be recieved for that profile.
      * @param id The Discord user ID to subscribe to
      */
     public subscribe (id: string, options: SubscribeOptions = {}) {
@@ -137,7 +138,7 @@ export class Client extends EventEmitter {
     }
 
     /**
-     * Unsubscribes the client from a specified profile by its ID so that events are no lonegr recieved for that profile.
+     * Unsubscribes the client from a specified profile by its ID so that events are no longer recieved for that profile.
      * @param id The Discord user ID to unsubscribe from
      */
     public unsubscribe (id: string) {
