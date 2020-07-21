@@ -173,7 +173,6 @@ export class SocketManager {
         }
 
         case GatewayEventNames.PROFILE_UPDATE: {
-
           const oldProfile = this.client.userProfiles?.get(socket.subscribedTo)?.payload || null;
           const currentProfile: Profile.Profile = eventData;
 
