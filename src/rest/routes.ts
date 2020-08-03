@@ -4,7 +4,7 @@ export const PROTOCOL = 'https://';
 
 export enum Endpoints {
     DETAILS = '/user/details/:input',
-    TOP_LIKES = '/topLikes'
+    TOP_LIKES = '/user/top'
 }
 
 export const DISCORD_VERSION = 6;

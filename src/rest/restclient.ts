@@ -7,8 +7,7 @@ import { BASE_URL, Endpoints, PARAM_INDICATOR, PROTOCOL, DISCORD_BASE_URL, Disco
 import { Bucket } from './bucket';
 import { StatusCodes, HeaderNames, HttpRequestTypes } from './constants';
 import { Client } from '../client';
-import { version } from '../../package.json';
-import { head } from 'superagent';
+import { VERSION } from '../index';
 
 export interface RestClientOptions {
 
@@ -31,7 +30,7 @@ export class RestClient {
     /**
      * The content-type to use when executing any Discord webhooks.
      */
-    readonly contentType = `dbiowrap ${version} (${platform()} ${arch()})`
+    readonly contentType = `dbiowrap ${VERSION} (${platform()} ${arch()})`
 
     /**
      * The most recently recieved ratelimit headers, if any.
