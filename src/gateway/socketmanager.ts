@@ -194,11 +194,7 @@ export class SocketManager {
           });
 
           if (socket.webHookOptions) {
-            this.client.rest?.executeWebhook(socket.webHookOptions.id, socket.webHookOptions.token, {
-              content: 'test',
-              username: 'ferris',
-              avatar_url: 'https://cdn.discordapp.com/avatars/708680386980479036/797bcff8a356d210123bc606801ab4db.png'
-            });
+
           }
 
           const cachedProfile = this.client.userProfiles?.get(socket.subscribedTo);
