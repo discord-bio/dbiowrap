@@ -207,7 +207,7 @@ export class SocketManager {
             this.client.userProfiles?.set(socket.subscribedTo, {
               payload: {
                 user: newUser,
-                discord: null
+                discord: new IDiscordUser(currentProfile.discord)
               }
             });
           } else {
