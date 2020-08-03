@@ -12,7 +12,7 @@ import * as GatewayConstants from './gateway/constants';
 import * as GatewayEvents from './gateway/gatewayevents';
 import * as Client from './client';
 
-const VERSION = '1.1.1';
+const VERSION = '1.1.2';
 
 export {
   Bucket,

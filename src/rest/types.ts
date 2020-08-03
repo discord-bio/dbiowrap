@@ -13,7 +13,7 @@ export namespace Details {
 
     export interface Payload {
         user: User;
-        discord: Discord | null;
+        discord: Discord;
     }
 
     export class Discord extends IDiscordUser {}
