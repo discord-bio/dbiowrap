@@ -5,7 +5,7 @@ import { RatelimitHeaders, Details, TopLikes, Version, WebhookOptions } from './
 import { DiscordBioError, RatelimitError } from './errors';
 import { BASE_URL, Endpoints, PARAM_INDICATOR, PROTOCOL, DISCORD_BASE_URL, DiscordEndpoints, Params } from './routes';
 import { Bucket } from './bucket';
-import { StatusCodes, HeaderNames, HttpRequestTypes } from './constants';
+import { StatusCodes, HeaderNames, HttpRequestTypes, ContentTypes } from './constants';
 import { Client } from '../client';
 import { VERSION } from '../index';
 
@@ -30,7 +30,7 @@ export class RestClient {
     /**
      * The content-type to use when executing any Discord webhooks.
      */
-    readonly contentType = `dbiowrap ${VERSION} (${platform()} ${arch()})`
+    readonly userAgent = `dbiowrap ${VERSION} (${platform()} ${arch()})`
 
     /**
      * The most recently recieved ratelimit headers, if any.
@@ -67,11 +67,12 @@ export class RestClient {
     public executeWebhook (id: string, token: string, options: WebhookOptions) {
       return fetch(`${PROTOCOL}${DISCORD_BASE_URL}${DiscordEndpoints.EXECUTE_WEBHOOK.replace(Params.WEBHOOK.id, id).replace(Params.WEBHOOK.token, token)}`, {
         headers: {
-          [HeaderNames.CONTENT_TYPE]: this.contentType
+          [HeaderNames.CONTENT_TYPE]: ContentTypes.JSON,
+          [HeaderNames.USER_AGENT]: this.userAgent
         },
         method: HttpRequestTypes.POST,
         body: JSON.stringify(options)
-      }).then(res => res.json());
+      }).then(res => res.text());
     }
 
     /**

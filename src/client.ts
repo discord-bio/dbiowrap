@@ -134,6 +134,7 @@ export class Client extends EventEmitter {
      */
     public subscribe (id: string, options: SubscribeOptions = {}) {
       if (!this.socketManager) throw new Error('WebSockets are disabled for this client');
+      if (!this.rest && options.webhook) throw new Error('Webhooks are disallowed if REST is disabled');
       return this.socketManager.subscribe(id, options);
     }
 

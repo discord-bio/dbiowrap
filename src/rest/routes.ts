@@ -9,6 +9,7 @@ export enum Endpoints {
 
 export const DISCORD_VERSION = 6;
 export const DISCORD_BASE_URL = `discord.com/api/v${DISCORD_VERSION}`;
+export const DISCORD_CDN_AVATARS_URL = 'cdn.discordapp.com/avatars';
 
 export const Params = Object.freeze({
   WEBHOOK: {

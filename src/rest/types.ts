@@ -71,7 +71,7 @@ export namespace TopLikes {
 
 export namespace DiscordEmbed {
 
-export interface Footer {
+  export interface Footer {
     text: string;
     icon_url?: string;
     proxy_icon_url?: string;
@@ -138,7 +138,7 @@ export interface WebhookOptions {
     avatar_url: string;
     tts?: boolean;
     file?: Buffer;
-    embed?: DiscordEmbed.Embed;
+    embeds?: DiscordEmbed.Embed[];
 }
 
 export interface Version {

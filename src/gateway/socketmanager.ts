@@ -10,9 +10,9 @@ import {
   BANNER_URL_PARAM
 } from './constants';
 import { Client } from '../client';
-import { snakeToCamelCase } from '../util';
+import { snakeToCamelCase, compareDifferences, getAvatarUrl } from '../util';
 import { Profile, SubscribeOptions } from './types';
-import { Details } from '../rest/types';
+import { Details, DiscordEmbed } from '../rest/types';
 import * as GatewayEvents from './gatewayevents';
 import { IDiscordUser } from '../structures/discorduser';
 
@@ -194,10 +194,37 @@ export class SocketManager {
           });
 
           if (socket.webHookOptions) {
+            const detailsDifferences = compareDifferences(oldProfile?.user.details, newProfile.user.details);
+            const connectionsDifferences = compareDifferences(oldProfile?.user.userConnections, newProfile.user.userConnections);
+            const fields: DiscordEmbed.Field[] = [];
+            if (connectionsDifferences && connectionsDifferences.length > 0) {
+              fields.push({
+                name: 'Connections',
+                value: connectionsDifferences.map(d => {
+                  const connection = (<{[key: string]: any}> newProfile.user.userConnections)[d];
+                  return `**${d}**: ${connection}`;
+                }).join('\n')
+              });
+            }
+
+            if (detailsDifferences && detailsDifferences.length > 0) {
+              fields.push({
+                name: 'Details',
+                value: detailsDifferences.map(d => {
+                  const detail = (<{[key: string]: any}> newProfile.user.details)[d];
+                  return `**${d}**: ${detail}`;
+                }).join('\n')
+              });
+            }
+
             this.client.rest?.executeWebhook(socket.webHookOptions.id, socket.webHookOptions.token, {
-              content: 'test',
-              username: 'ferris',
-              avatar_url: 'https://cdn.discordapp.com/avatars/708680386980479036/797bcff8a356d210123bc606801ab4db.png'
+              username: `${currentProfile.discord.username} on discord.bio`,
+              avatar_url: getAvatarUrl(newProfile.discord.avatar, newProfile.discord.id),
+              embeds: [{
+                title: `${currentProfile.discord.username} updated their discord.bio profile`,
+                color: 0x800080,
+                fields
+              }]
             });
           }
 
